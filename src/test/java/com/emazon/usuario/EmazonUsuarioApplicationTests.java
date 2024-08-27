@@ -1,4 +1,4 @@
-package com.emazon.emazon_usuario;
+package com.emazon.usuario;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
