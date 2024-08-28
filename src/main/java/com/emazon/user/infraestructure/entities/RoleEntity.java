@@ -1,4 +1,4 @@
-package com.emazon.usuario.infraestructure.entities;
+package com.emazon.user.infraestructure.entities;
 
 
 import jakarta.persistence.*;

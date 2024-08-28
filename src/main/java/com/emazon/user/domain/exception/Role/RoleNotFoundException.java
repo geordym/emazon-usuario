@@ -1,4 +1,4 @@
-package com.emazon.usuario.domain.exception.Role;
+package com.emazon.user.domain.exception.Role;
 
 public class RoleNotFoundException extends RuntimeException {
     public RoleNotFoundException(String message) {

@@ -1,9 +1,13 @@
-package com.emazon.usuario.infraestructure.repositories;
+package com.emazon.user.infraestructure.repositories;
 
-import com.emazon.stock.infraestructure.entities.UserEntity;
+import com.emazon.user.infraestructure.entities.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface UserCrudRepositoryMySQL extends JpaRepository<UserEntity, Long> {
-    boolean existsByUsername(String username);
+    boolean existsByEmail(String email);
+
+    boolean existsByIdentityDocument(String identityDocument);
 
 }

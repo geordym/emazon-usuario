@@ -1,4 +1,4 @@
-package com.emazon.user.infraestructure.rest.dto.request.WarehouseAssistant;
+package com.emazon.user.infraestructure.rest.dto.request.User;
 
 
 import jakarta.validation.constraints.*;
@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CreateWarehouseAssistantRequestDTO {
+public class CreateUserRequestDto {
 
     @NotBlank(message = "First name is mandatory")
     @Size(max = 50, message = "First name should not exceed 50 characters")
@@ -40,4 +40,9 @@ public class CreateWarehouseAssistantRequestDTO {
     @NotBlank(message = "Password is mandatory")
     @Size(min = 8, message = "Password should be at least 8 characters long")
     private String password; // Password should be encrypted with bcrypt before storage
+
+    @NotNull(message = "Role ID is mandatory")
+    private Long id_role;
+
+
 }

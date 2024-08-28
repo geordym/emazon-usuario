@@ -5,14 +5,14 @@ import com.emazon.user.infraestructure.entities.RoleEntity;
 import java.util.Arrays;
 import java.util.List;
 
-public enum Role {
+public enum RoleEnum {
     AUX_BODEGA(1L, "AUX_BODEGA"),
     USUARIO(2L, "USUARIO");
 
     private final Long id;
     private final String name;
 
-    Role(Long id, String name) {
+    RoleEnum(Long id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -26,27 +26,27 @@ public enum Role {
     }
 
     // Método para obtener un Role por su nombre
-    public static Role fromName(String name) {
-        for (Role role : Role.values()) {
-            if (role.getName().equalsIgnoreCase(name)) {
-                return role;
+    public static RoleEnum fromName(String name) {
+        for (RoleEnum roleEnum : RoleEnum.values()) {
+            if (roleEnum.getName().equalsIgnoreCase(name)) {
+                return roleEnum;
             }
         }
         throw new IllegalArgumentException("No se encontró el rol con el nombre: " + name);
     }
 
     // Método para obtener un Role por su ID
-    public static Role fromId(int id) {
-        for (Role role : Role.values()) {
-            if (role.getId() == id) {
-                return role;
+    public static RoleEnum fromId(Long id) {
+        for (RoleEnum roleEnum : RoleEnum.values()) {
+            if (roleEnum.getId() == id) {
+                return roleEnum;
             }
         }
         throw new IllegalArgumentException("No se encontró el rol con el ID: " + id);
     }
 
-    public static List<Role> getAllRoles() {
-        return Arrays.asList(Role.values());
+    public static List<RoleEnum> getAllRoles() {
+        return Arrays.asList(RoleEnum.values());
     }
 
     public RoleEntity toEntity() {

@@ -1,7 +1,7 @@
-package com.emazon.usuario.infraestructure.mapper;
+package com.emazon.user.infraestructure.mapper;
 
-import com.emazon.usuario.domain.model.Role;
-import com.emazon.usuario.infraestructure.entities.RoleEntity;
+import com.emazon.user.domain.model.Role;
+import com.emazon.user.infraestructure.entities.RoleEntity;
 
 public class RoleMapper {
 

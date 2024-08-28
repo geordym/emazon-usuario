@@ -1,10 +1,12 @@
-package com.emazon.usuario.domain.ports.out;
+package com.emazon.user.domain.ports.out;
 
 
-import com.emazon.usuario.domain.model.User;
+import com.emazon.user.domain.model.User;
 
 public interface UserRepositoryPort {
     User createUser(User user);
 
-    boolean existsUserByUsername(String username);
+    boolean existsUserByEmail(String email);
+
+    boolean existsUserByIdentityDocument(String identity);
 }

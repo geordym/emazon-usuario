@@ -1,20 +1,33 @@
-package com.emazon.usuario.domain.model;
+package com.emazon.user.domain.model;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.LocalDate;
 
 @NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class User {
 
     private Long id;
-    private String username;
+    private String firstName;
+    private String lastName;
+    private String identityDocument;
+    private String phoneNumber;
+    private String email;
     private String password;
+    private LocalDate birthDate;
     private Role role;
+
 
     // Constructor
     public User(Long id, String username, String password, Role role) {
         this.id = id;
-        this.username = username;
         this.password = password;
         this.role = role;
     }
@@ -29,13 +42,7 @@ public class User {
     }
 
 
-    public String getUsername() {
-        return username;
-    }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     public String getPassword() {
         return password;

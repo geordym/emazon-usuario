@@ -1,8 +1,8 @@
-package com.emazon.usuario.application.services;
+package com.emazon.user.application.services;
 
 
-import com.emazon.usuario.domain.model.User;
-import com.emazon.usuario.domain.ports.in.CreateUserUseCase;
+import com.emazon.user.domain.model.User;
+import com.emazon.user.domain.ports.in.CreateUserUseCase;
 import lombok.RequiredArgsConstructor;
 
 

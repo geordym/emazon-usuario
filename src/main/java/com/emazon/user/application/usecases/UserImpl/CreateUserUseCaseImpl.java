@@ -1,11 +1,11 @@
-package com.emazon.usuario.application.usecases.UserImpl;
+package com.emazon.user.application.usecases.UserImpl;
 
 
-import com.emazon.usuario.application.validators.UserValidator;
-import com.emazon.usuario.domain.model.User;
-import com.emazon.usuario.domain.ports.in.CreateUserUseCase;
-import com.emazon.usuario.domain.ports.out.Security.PasswordEncoderPort;
-import com.emazon.usuario.domain.ports.out.UserRepositoryPort;
+import com.emazon.user.application.validators.UserValidator;
+import com.emazon.user.domain.model.User;
+import com.emazon.user.domain.ports.in.CreateUserUseCase;
+import com.emazon.user.domain.ports.out.Security.PasswordEncoderPort;
+import com.emazon.user.domain.ports.out.UserRepositoryPort;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

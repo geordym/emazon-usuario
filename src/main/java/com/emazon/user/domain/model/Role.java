@@ -1,4 +1,4 @@
-package com.emazon.usuario.domain.model;
+package com.emazon.user.domain.model;
 
 import lombok.Getter;
 import lombok.Setter;

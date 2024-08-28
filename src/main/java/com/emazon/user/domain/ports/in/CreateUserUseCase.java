@@ -1,6 +1,6 @@
-package com.emazon.usuario.domain.ports.in;
+package com.emazon.user.domain.ports.in;
 
-import com.emazon.usuario.domain.model.User;
+import com.emazon.user.domain.model.User;
 
 public interface CreateUserUseCase {
     User createUser(User user);

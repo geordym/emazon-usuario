@@ -1,13 +1,13 @@
-package com.emazon.usuario.infraestructure.configuration;
+package com.emazon.user.infraestructure.configuration;
 
 
-import com.emazon.stock.application.services.UserService;
-import com.emazon.stock.application.usecases.UserImpl.CreateUserUseCaseImpl;
-import com.emazon.stock.application.validators.UserValidator;
-import com.emazon.stock.domain.puertos.out.Security.PasswordEncoderPort;
-import com.emazon.stock.domain.puertos.out.UserRepositoryPort;
-import com.emazon.stock.infraestructure.adapters.UserRepositoryMySQLAdapter;
-import com.emazon.stock.infraestructure.repositories.UserCrudRepositoryMySQL;
+import com.emazon.user.application.services.UserService;
+import com.emazon.user.application.usecases.UserImpl.CreateUserUseCaseImpl;
+import com.emazon.user.application.validators.UserValidator;
+import com.emazon.user.domain.ports.out.Security.PasswordEncoderPort;
+import com.emazon.user.domain.ports.out.UserRepositoryPort;
+import com.emazon.user.infraestructure.adapters.UserRepositoryMySQLAdapter;
+import com.emazon.user.infraestructure.repositories.UserCrudRepositoryMySQL;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

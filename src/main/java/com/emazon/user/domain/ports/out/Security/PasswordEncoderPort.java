@@ -1,4 +1,4 @@
-package com.emazon.usuario.domain.ports.out.Security;
+package com.emazon.user.domain.ports.out.Security;
 
 public interface PasswordEncoderPort {
 
