@@ -4,10 +4,13 @@ import com.emazon.user.infraestructure.entities.RoleEntity;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public enum RoleEnum {
     AUX_BODEGA(1L, "AUX_BODEGA"),
-    USUARIO(2L, "USUARIO");
+    CLIENTE(2L, "CLIENT"),
+    ADMINISTRADOR(3L, "ADMINISTRATOR");
+
 
     private final Long id;
     private final String name;
@@ -47,6 +50,12 @@ public enum RoleEnum {
 
     public static List<RoleEnum> getAllRoles() {
         return Arrays.asList(RoleEnum.values());
+    }
+
+    public static List<Long> getAllIds() {
+        return Arrays.stream(values())
+                .map(RoleEnum::getId)
+                .collect(Collectors.toList());
     }
 
     public RoleEntity toEntity() {

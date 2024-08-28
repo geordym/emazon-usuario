@@ -2,9 +2,7 @@ package com.emazon.user.application.usecases;
 
 import com.emazon.user.application.usecases.UserImpl.CreateUserUseCaseImpl;
 import com.emazon.user.application.validators.UserValidator;
-import com.emazon.user.domain.exception.Role.RoleEmptyException;
 import com.emazon.user.domain.exception.Role.RoleNotFoundException;
-import com.emazon.user.domain.exception.User.PasswordEmptyException;
 import com.emazon.user.domain.exception.User.PasswordFormatException;
 import com.emazon.user.domain.model.Role;
 import com.emazon.user.domain.model.User;
@@ -12,7 +10,6 @@ import com.emazon.user.domain.ports.out.RoleRepositoryPort;
 import com.emazon.user.domain.ports.out.Security.PasswordEncoderPort;
 import com.emazon.user.domain.ports.out.UserRepositoryPort;
 import com.emazon.user.infraestructure.enums.RoleEnum;
-import com.emazon.user.infraestructure.factories.UserFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -92,7 +89,7 @@ public class CreateUserUseCaseImplTest {
         user.setPassword("");
         user.setRole(roleWareHouseAssistant);
 
-        assertThrows(PasswordEmptyException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             createUserUseCase.createUser(user);
         });
 
@@ -105,7 +102,7 @@ public class CreateUserUseCaseImplTest {
         user.setPassword(validPassword);
         //user.setRole(roleWareHouseAssistant);
 
-        assertThrows(RoleEmptyException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             createUserUseCase.createUser(user);
         });
 

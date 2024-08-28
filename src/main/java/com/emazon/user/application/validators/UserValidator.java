@@ -1,7 +1,6 @@
 package com.emazon.user.application.validators;
 
 
-import com.emazon.user.domain.exception.Role.RoleEmptyException;
 import com.emazon.user.domain.exception.Role.RoleNotFoundException;
 import com.emazon.user.domain.exception.User.*;
 import com.emazon.user.domain.model.Role;
@@ -11,10 +10,11 @@ import com.emazon.user.domain.ports.out.UserRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.regex.Pattern;
 
-import static com.emazon.user.domain.util.Constantes.SECURITY_PASSWORD_MIN_LENGTH;
-import static com.emazon.user.domain.util.Constantes.USER_EMAIL_REGEX_VALIDATION;
+import static com.emazon.user.domain.util.Constantes.*;
 
 
 @Component
@@ -26,43 +26,62 @@ public class UserValidator {
 
 
     public void validate(User user) {
-        validateUsername(user.getEmail());
+        validateEmail(user.getEmail());
         validatePassword(user.getPassword());
         validateRole(user.getRole());
         validateIdentityDocument(user.getIdentityDocument());
+        validateAge(user.getBirthDate());
+    }
+
+    private void validateAge(LocalDate birthDate) {
+        Integer edad = calculateAge(birthDate);
+
+        if(!IsOfLegalAge(edad)){
+        throw  new UnderageUserException();
+        }
+
+
+    }
+
+    private boolean IsOfLegalAge(Integer edad){
+        return edad >= MINIMUM_USER_AGE;
+    }
+
+    public static int calculateAge(LocalDate birthDate) {
+        if (birthDate == null) {
+            throw new IllegalArgumentException("The birthDate cannot be null");
+        }
+
+        return Period.between(birthDate, LocalDate.now()).getYears();
     }
 
     private void validateIdentityDocument(String identityDocument) {
 
         if(IsIdentityDocumentRegister(identityDocument)){
-            throw new InvalidIdentityDocumentException("Identity document is invalid or missing.");
+            throw new IdentityDocumentTakenException();
         }
 
     }
 
-    private void validateUsername(String username) {
+    private void validateEmail(String email) {
 
-        if (username == null || username.isEmpty()) {
-            throw new UsernameEmptyException("Username cannot be empty");
+        if (IsEmailAlreadyTaken(email)) {
+            throw new EmailAlreadyTakenException();
         }
 
-        if (IsEmailAlreadyTaken(username)) {
-            throw new UsernameAlreadyTakenException("This email is already taken");
-        }
-
-        if(!IsValidEmailFormat(username)){
-            throw new InvalidEmailFormatException("Username must be a email");
+        if(!IsValidEmailFormat(email)){
+            throw new InvalidEmailFormatException();
         }
 
     }
 
     private void validatePassword(String password) {
         if (password == null || password.isEmpty() ) {
-            throw new PasswordEmptyException("Password cannot be empty");
+            throw new IllegalArgumentException("Password cannot be null or empty");
         }
 
         if(!validPasswordFormat(password)){
-            throw new PasswordFormatException("Password is not valid");
+            throw new PasswordFormatException();
         }
     }
 
@@ -86,11 +105,11 @@ public class UserValidator {
 
     private void validateRole(Role role) {
         if (role == null) {
-            throw new RoleEmptyException("Role cannot be null");
+            throw new IllegalArgumentException("Role cannot be null or empty");
         }
         // Aquí podrías agregar lógica adicional para verificar si el rol existe
         if (!roleExists(role)) {
-            throw new RoleNotFoundException("Role does not exist");
+            throw new RoleNotFoundException(role.getId());
         }
     }
 
@@ -98,7 +117,9 @@ public class UserValidator {
         return roleRepositoryPort.existsRolById(role.getId());
     }
 
-    private boolean IsEmailAlreadyTaken(String username) {
-        return userRepositoryPort.existsUserByEmail(username);
+    private boolean IsEmailAlreadyTaken(String email) {
+        return userRepositoryPort.existsUserByEmail(email);
     }
+
+
 }

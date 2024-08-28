@@ -33,7 +33,8 @@ public class UserController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "User created successfully", content = @Content),
-            @ApiResponse(responseCode = "400", description = "Invalid input", content = @Content)
+            @ApiResponse(responseCode = "400", description = "Invalid input", content = @Content),
+            @ApiResponse(responseCode = "409", description = "User email or identityDocument exists in bd", content = @Content)
     })
     @PostMapping
     public ResponseEntity<String> createUser(

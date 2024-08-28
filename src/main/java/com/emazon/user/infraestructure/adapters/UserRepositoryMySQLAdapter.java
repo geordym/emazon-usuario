@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
-@Component
 public class UserRepositoryMySQLAdapter implements UserRepositoryPort {
 
     private final UserCrudRepositoryMySQL userCrudRepositoryMySQL;

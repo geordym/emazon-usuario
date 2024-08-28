@@ -43,7 +43,7 @@ public class UserMapper {
     }
 
     public static User dtoToDomain(CreateUserRequestDto createUserRequestDto){
-        Role role = new Role(createUserRequestDto.getId_role(), "");
+        Role role = new Role(createUserRequestDto.getId_rol(), "");
         User userModel =  UserFactory.createUserModel(
                 createUserRequestDto.getFirstName(),
                 createUserRequestDto.getLastName(),

@@ -5,4 +5,5 @@ public class Constantes {
 
     public static final String USER_EMAIL_REGEX_VALIDATION = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
 
+    public static final Integer MINIMUM_USER_AGE = 18;
 }
