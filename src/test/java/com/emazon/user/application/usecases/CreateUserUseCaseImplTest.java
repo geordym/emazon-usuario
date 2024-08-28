@@ -17,6 +17,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
+import java.time.LocalDate;
+
+import static com.emazon.user.domain.util.Constantes.MINIMUM_USER_AGE;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -56,6 +59,7 @@ public class CreateUserUseCaseImplTest {
         user.setEmail(validEmail);
         user.setPassword(validPassword);
         user.setRole(roleWareHouseAssistant);
+        user.setBirthDate(LocalDate.now().minusYears(MINIMUM_USER_AGE));
 
         when(roleRepositoryPort.existsRolById(roleWareHouseAssistant.getId())).thenReturn(true);
         when(userRepositoryPort.createUser(user)).thenReturn(user);

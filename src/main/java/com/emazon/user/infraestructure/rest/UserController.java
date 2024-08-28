@@ -43,7 +43,7 @@ public class UserController {
             @RequestBody @Valid CreateUserRequestDto createUserRequestDto) {
 
         userService.createUser(UserMapper.dtoToDomain(createUserRequestDto));
-        return new ResponseEntity<>("Usuario creado exitosamente", HttpStatus.CREATED);
+        return new ResponseEntity<>("User created succesfully", HttpStatus.CREATED);
     }
 
 }

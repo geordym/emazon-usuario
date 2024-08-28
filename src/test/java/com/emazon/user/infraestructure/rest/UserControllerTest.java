@@ -141,7 +141,9 @@ public class UserControllerTest {
         mockMvc.perform(post("/api/users")
                         .contentType("application/json")
                         .content(userJson))
-                .andExpect(status().isConflict());
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.error").value(String.format(ErrorMessages.IDENTITY_DOCUMENT_ALREADY_TAKEN)));
+
     }
 
     @Test

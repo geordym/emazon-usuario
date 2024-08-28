@@ -49,7 +49,7 @@ public class CreateUserRequestDto {
             allowableValues = {"1","2", "3"},
             example = "1",
             type = "integer")
-    private Long id_rol;
+    private Long id_role;
 
 
 }
