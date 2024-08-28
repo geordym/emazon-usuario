@@ -8,4 +8,6 @@ public class ErrorMessages {
     public static final String IDENTITY_DOCUMENT_ALREADY_TAKEN = "The provided identity is already taken.";
     public static final String INVALID_EMAIL_FORMAT = "The provided email address is invalid.";
     public static final String ROLE_NOT_FOUND = "Role with ID %d does not exist.";
+
+    public static final String INVALID_CREDENTIALS_EXCEPTION = "Invalid email or password";
 }

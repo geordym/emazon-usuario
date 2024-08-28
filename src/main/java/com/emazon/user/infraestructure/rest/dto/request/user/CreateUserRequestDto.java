@@ -1,7 +1,6 @@
-package com.emazon.user.infraestructure.rest.dto.request.User;
+package com.emazon.user.infraestructure.rest.dto.request.user;
 
 
-import com.emazon.user.infraestructure.enums.RoleEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.Getter;

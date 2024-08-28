@@ -3,9 +3,10 @@ package com.emazon.user.infraestructure.mapper;
 import com.emazon.user.domain.model.Role;
 import com.emazon.user.domain.model.User;
 import com.emazon.user.infraestructure.entities.UserEntity;
-import com.emazon.user.infraestructure.enums.RoleEnum;
 import com.emazon.user.infraestructure.factories.UserFactory;
-import com.emazon.user.infraestructure.rest.dto.request.User.CreateUserRequestDto;
+import com.emazon.user.infraestructure.rest.dto.request.user.CreateUserRequestDto;
+
+import java.util.Optional;
 
 public class UserMapper {
 
@@ -56,6 +57,26 @@ public class UserMapper {
         );
 
         return userModel;
+    }
+
+    public static Optional<User> optionalEntityToOptionalDomain(Optional<UserEntity> userEntityOpt){
+        if(userEntityOpt.isEmpty()){
+            return Optional.of(new User());
+        }
+
+        UserEntity userEntity = userEntityOpt.get();
+        User userModel =  UserFactory.createUserModel(
+                userEntity.getFirstName(),
+                userEntity.getLastName(),
+                userEntity.getIdentityDocument(),
+                userEntity.getPhoneNumber(),
+                userEntity.getEmail(),
+                userEntity.getPassword(),
+                userEntity.getBirthDate(),
+                RoleMapper.entityToDomain(userEntity.getRole())
+        );
+
+        return Optional.of(userModel);
     }
 
 

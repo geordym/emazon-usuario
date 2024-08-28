@@ -2,9 +2,8 @@ package com.emazon.user.infraestructure.rest;
 
 
 import com.emazon.user.application.services.UserService;
-import com.emazon.user.domain.model.User;
 import com.emazon.user.infraestructure.mapper.UserMapper;
-import com.emazon.user.infraestructure.rest.dto.request.User.CreateUserRequestDto;
+import com.emazon.user.infraestructure.rest.dto.request.user.CreateUserRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

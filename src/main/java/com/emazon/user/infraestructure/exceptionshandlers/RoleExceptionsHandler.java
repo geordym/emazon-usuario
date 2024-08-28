@@ -1,4 +1,4 @@
-package com.emazon.user.infraestructure.exceptions;
+package com.emazon.user.infraestructure.exceptionshandlers;
 
 
 import com.emazon.user.domain.exception.Role.RoleNotFoundException;
