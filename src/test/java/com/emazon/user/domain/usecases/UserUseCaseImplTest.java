@@ -1,6 +1,6 @@
-package com.emazon.user.application.usecases;
+package com.emazon.user.domain.usecases;
 
-import com.emazon.user.application.usecases.UserImpl.CreateUserUseCaseImpl;
+import com.emazon.user.domain.exception.User.InvalidEmailFormatException;
 import com.emazon.user.application.validators.UserValidator;
 import com.emazon.user.domain.exception.Role.RoleNotFoundException;
 import com.emazon.user.domain.exception.User.PasswordFormatException;
@@ -12,9 +12,10 @@ import com.emazon.user.domain.ports.out.UserRepositoryPort;
 import com.emazon.user.infraestructure.enums.RoleEnum;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import java.time.LocalDate;
@@ -25,7 +26,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-public class CreateUserUseCaseImplTest {
+
+@ExtendWith(MockitoExtension.class)
+public class UserUseCaseImplTest {
 
     @Mock
     private UserRepositoryPort userRepositoryPort;
@@ -37,7 +40,7 @@ public class CreateUserUseCaseImplTest {
     private RoleRepositoryPort roleRepositoryPort;
 
     @InjectMocks
-    private CreateUserUseCaseImpl createUserUseCase;
+    private UserUseCasesImpl userUseCases;
 
     private Role roleWareHouseAssistant;
 
@@ -46,11 +49,10 @@ public class CreateUserUseCaseImplTest {
 
     @BeforeEach
     void setup(){
-        MockitoAnnotations.initMocks(this);
         roleWareHouseAssistant = new Role(RoleEnum.AUX_BODEGA.getId(), RoleEnum.AUX_BODEGA.getName());
         userValidator = new UserValidator(userRepositoryPort, roleRepositoryPort);
 
-        createUserUseCase = new CreateUserUseCaseImpl(userRepositoryPort,passwordEncoderPort,userValidator);
+        userUseCases = new UserUseCasesImpl(passwordEncoderPort,userValidator, userRepositoryPort);
     }
 
     @Test
@@ -65,7 +67,7 @@ public class CreateUserUseCaseImplTest {
         when(userRepositoryPort.createUser(user)).thenReturn(user);
 
         // Llamar al método del caso de uso
-        User createdUser = createUserUseCase.createUser(user);
+        User createdUser = userUseCases.createUser(user);
 
         // Verificar el resultado
         assertNotNull(createdUser);
@@ -81,9 +83,9 @@ public class CreateUserUseCaseImplTest {
         user.setPassword(validPassword);
         user.setRole(roleWareHouseAssistant);
 
-        when(userRepositoryPort.createUser(user)).thenReturn(user);
-
-
+        assertThrows(InvalidEmailFormatException.class, () -> {
+            userUseCases.createUser(user);
+        });
     }
 
     @Test
@@ -94,7 +96,7 @@ public class CreateUserUseCaseImplTest {
         user.setRole(roleWareHouseAssistant);
 
         assertThrows(IllegalArgumentException.class, () -> {
-            createUserUseCase.createUser(user);
+            userUseCases.createUser(user);
         });
 
     }
@@ -107,7 +109,7 @@ public class CreateUserUseCaseImplTest {
         //user.setRole(roleWareHouseAssistant);
 
         assertThrows(IllegalArgumentException.class, () -> {
-            createUserUseCase.createUser(user);
+            userUseCases.createUser(user);
         });
 
     }
@@ -122,7 +124,7 @@ public class CreateUserUseCaseImplTest {
         user.setRole(roleFake);
 
         assertThrows(RoleNotFoundException.class, () -> {
-            createUserUseCase.createUser(user);
+            userUseCases.createUser(user);
         });
 
     }
@@ -135,7 +137,7 @@ public class CreateUserUseCaseImplTest {
         user.setRole(roleWareHouseAssistant);
 
         assertThrows(PasswordFormatException.class, () -> {
-            createUserUseCase.createUser(user);
+            userUseCases.createUser(user);
         });
     }
 

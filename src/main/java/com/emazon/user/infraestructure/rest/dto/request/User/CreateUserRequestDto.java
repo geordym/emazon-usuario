@@ -1,4 +1,4 @@
-package com.emazon.user.infraestructure.rest.dto.request.user;
+package com.emazon.user.infraestructure.rest.dto.request.User;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;

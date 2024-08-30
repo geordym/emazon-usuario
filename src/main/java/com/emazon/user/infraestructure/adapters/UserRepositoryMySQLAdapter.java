@@ -9,7 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class UserRepositoryMySQLAdapter implements UserRepositoryPort {
@@ -35,6 +37,11 @@ public class UserRepositoryMySQLAdapter implements UserRepositoryPort {
     public Optional<User> findByEmail(String email) {
         Optional<UserEntity> userEntityOpt = userCrudRepositoryMySQL.findByEmail(email);
         return UserMapper.optionalEntityToOptionalDomain(userEntityOpt);
+    }
+
+    @Override
+    public List<User> getUsersByRoleId(Long roleId) {
+        return userCrudRepositoryMySQL.findAllByIdRole(roleId).stream().map(UserMapper::entityToDomain).collect(Collectors.toList());
     }
 
 

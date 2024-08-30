@@ -1,9 +1,10 @@
 package com.emazon.user.infraestructure.rest;
 
 
-import com.emazon.user.application.services.UserService;
+import com.emazon.user.application.services.IUserService;
 import com.emazon.user.infraestructure.mapper.UserMapper;
-import com.emazon.user.infraestructure.rest.dto.request.user.CreateUserRequestDto;
+import com.emazon.user.infraestructure.rest.dto.request.User.*;
+import com.emazon.user.infraestructure.rest.dto.response.user.UserInfoResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -13,17 +14,41 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+    private final IUserService userService;
+
+
+    @GetMapping("/info")
+    public ResponseEntity<UserInfoResponseDto> getUserInfo() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            List<String> roles = userDetails.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .collect(Collectors.toList());
+            UserInfoResponseDto userInfo = new UserInfoResponseDto(userDetails.getUsername(),
+                    roles);
+            return new ResponseEntity<>(userInfo,HttpStatus.OK);
+        }
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(null);
+    }
+
 
     @Operation(
             summary = "Register a New User",
@@ -44,5 +69,8 @@ public class UserController {
         userService.createUser(UserMapper.dtoToDomain(createUserRequestDto));
         return new ResponseEntity<>("User created succesfully", HttpStatus.CREATED);
     }
+
+
+
 
 }

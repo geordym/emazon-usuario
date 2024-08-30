@@ -4,7 +4,7 @@ import com.emazon.user.domain.model.Role;
 import com.emazon.user.domain.model.User;
 import com.emazon.user.infraestructure.entities.UserEntity;
 import com.emazon.user.infraestructure.factories.UserFactory;
-import com.emazon.user.infraestructure.rest.dto.request.user.CreateUserRequestDto;
+import com.emazon.user.infraestructure.rest.dto.request.User.CreateUserRequestDto;
 
 import java.util.Optional;
 
@@ -61,7 +61,7 @@ public class UserMapper {
 
     public static Optional<User> optionalEntityToOptionalDomain(Optional<UserEntity> userEntityOpt){
         if(userEntityOpt.isEmpty()){
-            return Optional.of(new User());
+            return Optional.empty();
         }
 
         UserEntity userEntity = userEntityOpt.get();

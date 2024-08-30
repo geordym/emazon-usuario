@@ -2,6 +2,7 @@ package com.emazon.user.infraestructure.configuration.Security;
 
 
 import com.emazon.user.domain.ports.out.Security.PasswordEncoderPort;
+import com.emazon.user.infraestructure.enums.RoleEnum;
 import jakarta.servlet.Filter;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -42,18 +43,12 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(registry -> {
-                  //  registry.requestMatchers("/api/**").permitAll();
-                   // registry.requestMatchers("/user/**").authenticated();
-                    registry.anyRequest().permitAll();  // Permitir todas las solicitudes
-                })
-                .formLogin(httpSecurityFormLogingConfigurer ->{
-                    httpSecurityFormLogingConfigurer
-                            .loginPage("/login")
-                            .permitAll();
+                    registry.requestMatchers("/api/users").hasAuthority(RoleEnum.ADMINISTRADOR.getName().toString());
+                    registry.requestMatchers("/api/users/**").authenticated();
 
+                    registry.requestMatchers("/api/authenticate").permitAll();
                 })
-                .httpBasic(Customizer.withDefaults())
-                .addFilterBefore((Filter) jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
 
     }
@@ -98,6 +93,7 @@ public class SecurityConfig {
         provider.setPasswordEncoder(passwordEncoder);
         return provider;
     }
+
 
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {

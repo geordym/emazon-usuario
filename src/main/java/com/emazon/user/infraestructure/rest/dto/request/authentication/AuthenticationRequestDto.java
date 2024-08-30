@@ -1,10 +1,14 @@
 package com.emazon.user.infraestructure.rest.dto.request.authentication;
 
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+
 public class AuthenticationRequestDto {
 
-    private String username;
-    private String password;
+    public String username;
+    public String password;
 
     // Constructor vacío necesario para la deserialización
     public AuthenticationRequestDto() {

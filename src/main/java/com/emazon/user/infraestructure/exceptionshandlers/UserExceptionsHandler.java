@@ -14,6 +14,14 @@ import java.util.Map;
 public class UserExceptionsHandler {
 
 
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleUsernameNotFoundException(UsernameNotFoundException e) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("error", e.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(errorResponse);
+    }
 
     @ExceptionHandler(UnderageUserException.class)
     public ResponseEntity<Map<String, String>> handleUnderageUserException(UnderageUserException e) {

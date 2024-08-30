@@ -1,8 +1,8 @@
 package com.emazon.user.infraestructure.configuration;
 
 
-import com.emazon.user.application.services.UserService;
-import com.emazon.user.application.usecases.UserImpl.CreateUserUseCaseImpl;
+import com.emazon.user.application.services.implementations.UserService;
+import com.emazon.user.domain.usecases.UserUseCasesImpl;
 import com.emazon.user.application.validators.UserValidator;
 import com.emazon.user.domain.ports.out.Security.PasswordEncoderPort;
 import com.emazon.user.domain.ports.out.UserRepositoryPort;
@@ -16,7 +16,7 @@ public class BeanUserConfiguration {
 
     @Bean
     public UserService userService(UserRepositoryPort userRepositoryPort, PasswordEncoderPort passwordEncoderPort, UserValidator userValidator){
-        return new UserService(new CreateUserUseCaseImpl(userRepositoryPort, passwordEncoderPort, userValidator));
+        return new UserService(new UserUseCasesImpl(passwordEncoderPort,userValidator, userRepositoryPort) );
     }
 
     @Bean

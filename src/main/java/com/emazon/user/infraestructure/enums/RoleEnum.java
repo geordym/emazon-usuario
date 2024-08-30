@@ -1,5 +1,6 @@
 package com.emazon.user.infraestructure.enums;
 
+import com.emazon.user.domain.model.Role;
 import com.emazon.user.infraestructure.entities.RoleEntity;
 
 import java.util.Arrays;
@@ -64,4 +65,10 @@ public enum RoleEnum {
         roleEntity.setName(this.name);
         return roleEntity;
     }
+
+    public Role toModel() {
+        Role role = new Role(this.id, this.name);
+        return role;
+    }
+
 }

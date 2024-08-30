@@ -37,10 +37,8 @@ public class UserValidator {
         Integer edad = calculateAge(birthDate);
 
         if(!IsOfLegalAge(edad)){
-        throw  new UnderageUserException();
+            throw  new UnderageUserException();
         }
-
-
     }
 
     private boolean IsOfLegalAge(Integer edad){

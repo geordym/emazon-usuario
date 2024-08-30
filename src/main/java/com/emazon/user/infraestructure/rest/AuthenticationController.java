@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/authenticate")
 public class AuthenticationController {
 
     @Autowired
@@ -31,7 +31,7 @@ public class AuthenticationController {
     @Autowired
     private MyUserDetailsService userDetailsService;
 
-    @PostMapping("/authenticate")
+    @PostMapping
     public ResponseEntity<?> createAuthenticationToken(@RequestBody @Valid AuthenticationRequestDto authenticationRequest) throws Exception {
         try {
             authenticationManager.authenticate(

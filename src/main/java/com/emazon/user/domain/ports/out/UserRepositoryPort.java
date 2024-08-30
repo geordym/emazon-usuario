@@ -3,6 +3,7 @@ package com.emazon.user.domain.ports.out;
 
 import com.emazon.user.domain.model.User;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepositoryPort {
@@ -13,5 +14,7 @@ public interface UserRepositoryPort {
     boolean existsUserByIdentityDocument(String identity);
 
     Optional<User> findByEmail(String email);
+
+    List<User> getUsersByRoleId(Long roleId);
 
 }

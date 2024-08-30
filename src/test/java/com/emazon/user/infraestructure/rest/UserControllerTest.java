@@ -4,7 +4,7 @@ package com.emazon.user.infraestructure.rest;
 import com.emazon.user.domain.ports.out.UserRepositoryPort;
 import com.emazon.user.domain.util.ErrorMessages;
 import com.emazon.user.infraestructure.enums.RoleEnum;
-import com.emazon.user.infraestructure.rest.dto.request.user.CreateUserRequestDto;
+import com.emazon.user.infraestructure.rest.dto.request.User.CreateUserRequestDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 public class UserControllerTest {
 
     @Autowired
@@ -35,13 +35,8 @@ public class UserControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
-
-
     @MockBean
     private UserRepositoryPort userRepositoryPort;
-
-
-
 
     CreateUserRequestDto createUserRequestDtoValid = new CreateUserRequestDto();
 

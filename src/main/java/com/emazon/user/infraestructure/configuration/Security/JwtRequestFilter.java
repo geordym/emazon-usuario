@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -45,10 +46,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 // Allow for Refresh Token creation if following conditions are true.
                 if (isRefreshToken != null && isRefreshToken.equals("true") && requestURL.contains("refreshtoken")) {
                     allowForRefreshToken(e, request);
-                } else
-                    request.setAttribute("exception", e);
-            } catch (Exception e) {
-                request.setAttribute("exception", e);
+                }
             }
         }
 
@@ -62,6 +60,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
         }
+
+
         chain.doFilter(request, response);
     }
 

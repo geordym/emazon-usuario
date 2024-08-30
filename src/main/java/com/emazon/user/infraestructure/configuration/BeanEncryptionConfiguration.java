@@ -9,12 +9,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 public class BeanEncryptionConfiguration {
-
     @Bean
     public PasswordEncoderPort passwordEncoderPort(BCryptPasswordEncoder bCryptPasswordEncoder){
         return new EncryptionBCryptAdapter(bCryptPasswordEncoder);
     }
-
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
