@@ -1,7 +1,7 @@
 package com.emazon.user.domain.usecases;
 
 import com.emazon.user.domain.exception.User.InvalidEmailFormatException;
-import com.emazon.user.application.validators.UserValidator;
+import com.emazon.user.domain.usecases.validators.UserValidator;
 import com.emazon.user.domain.exception.Role.RoleNotFoundException;
 import com.emazon.user.domain.exception.User.PasswordFormatException;
 import com.emazon.user.domain.model.Role;

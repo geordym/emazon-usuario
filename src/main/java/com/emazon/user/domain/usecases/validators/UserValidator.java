@@ -1,4 +1,4 @@
-package com.emazon.user.application.validators;
+package com.emazon.user.domain.usecases.validators;
 
 
 import com.emazon.user.domain.exception.Role.RoleNotFoundException;

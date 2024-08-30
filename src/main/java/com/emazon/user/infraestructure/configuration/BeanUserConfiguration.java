@@ -3,7 +3,7 @@ package com.emazon.user.infraestructure.configuration;
 
 import com.emazon.user.application.services.implementations.UserService;
 import com.emazon.user.domain.usecases.UserUseCasesImpl;
-import com.emazon.user.application.validators.UserValidator;
+import com.emazon.user.domain.usecases.validators.UserValidator;
 import com.emazon.user.domain.ports.out.Security.PasswordEncoderPort;
 import com.emazon.user.domain.ports.out.UserRepositoryPort;
 import com.emazon.user.infraestructure.adapters.UserRepositoryMySQLAdapter;
@@ -23,6 +23,8 @@ public class BeanUserConfiguration {
     public UserRepositoryPort userRepositoryPort(UserCrudRepositoryMySQL userCrudRepositoryMySQL){
         return new UserRepositoryMySQLAdapter(userCrudRepositoryMySQL);
     }
+
+
 
 
 }

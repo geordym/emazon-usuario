@@ -1,6 +1,6 @@
 package com.emazon.user.domain.usecases;
 
-import com.emazon.user.application.validators.UserValidator;
+import com.emazon.user.domain.usecases.validators.UserValidator;
 import com.emazon.user.domain.model.User;
 import com.emazon.user.domain.ports.in.UserUseCases;
 import com.emazon.user.domain.ports.out.Security.PasswordEncoderPort;

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -19,7 +20,7 @@ import static com.emazon.user.domain.util.Constantes.MINIMUM_USER_AGE;
 
 @Component
 @RequiredArgsConstructor
-public class AdminSeeder implements CommandLineRunner {
+public class AdminSeeder implements CommandLineRunner, Ordered {
 
     private final UserService userService;
 
@@ -48,5 +49,8 @@ public class AdminSeeder implements CommandLineRunner {
     }
 
 
-
+    @Override
+    public int getOrder() {
+        return LOWEST_PRECEDENCE;
+    }
 }

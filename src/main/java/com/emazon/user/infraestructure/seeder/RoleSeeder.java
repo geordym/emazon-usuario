@@ -6,6 +6,7 @@ import com.emazon.user.infraestructure.enums.RoleEnum;
 import com.emazon.user.infraestructure.mapper.RoleMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class RoleSeeder implements CommandLineRunner {
+public class RoleSeeder implements CommandLineRunner, Ordered {
 
     private final RoleRepositoryPort roleRepositoryPort;
 
@@ -30,5 +31,8 @@ public class RoleSeeder implements CommandLineRunner {
     }
 
 
-
+    @Override
+    public int getOrder() {
+        return Ordered.HIGHEST_PRECEDENCE;
+    }
 }
