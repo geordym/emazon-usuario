@@ -31,7 +31,31 @@ public class UserValidator {
         validateRole(user.getRole());
         validateIdentityDocument(user.getIdentityDocument());
         validateAge(user.getBirthDate());
+        validatePhoneNumber(user.getPhoneNumber());
     }
+
+
+    public void validatePhoneNumber(String phoneNumber) {
+        if (phoneNumber == null || phoneNumber.isEmpty()) {
+            throw new IllegalArgumentException("El número de teléfono no puede ser nulo o vacío.");
+        }
+
+        String regex = "^\\+?\\d{1,13}$";
+        if (!phoneNumber.matches(regex)) {
+            throw new IllegalArgumentException("El número de teléfono no es válido. Debe tener hasta 13 dígitos y puede contener solo un símbolo de '+' al inicio.");
+        }
+
+        if (phoneNumber.startsWith("+")) {
+            if (phoneNumber.length() > 14) {
+                throw new IllegalArgumentException("El número de teléfono no puede tener más de 13 dígitos después del '+'.");
+            }
+        } else {
+            if (phoneNumber.length() > 13) {
+                throw new IllegalArgumentException("El número de teléfono no puede tener más de 13 dígitos.");
+            }
+        }
+    }
+
 
     private void validateAge(LocalDate birthDate) {
         Integer edad = calculateAge(birthDate);
