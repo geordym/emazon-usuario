@@ -17,7 +17,6 @@ import java.util.regex.Pattern;
 import static com.emazon.user.domain.util.Constantes.*;
 
 
-@Component
 @RequiredArgsConstructor
 public class UserValidator {
 
