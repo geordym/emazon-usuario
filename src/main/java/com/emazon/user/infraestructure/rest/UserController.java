@@ -2,6 +2,8 @@ package com.emazon.user.infraestructure.rest;
 
 
 import com.emazon.user.application.services.IUserService;
+import com.emazon.user.application.services.implementations.UserService;
+import com.emazon.user.domain.model.User;
 import com.emazon.user.infraestructure.mapper.UserMapper;
 import com.emazon.user.infraestructure.rest.dto.request.User.*;
 import com.emazon.user.infraestructure.rest.dto.response.user.UserInfoResponseDto;
@@ -21,6 +23,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -34,14 +37,18 @@ public class UserController {
     @GetMapping("/info")
     public ResponseEntity<UserInfoResponseDto> getUserInfo() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             List<String> roles = userDetails.getAuthorities().stream()
                     .map(GrantedAuthority::getAuthority)
                     .collect(Collectors.toList());
-            UserInfoResponseDto userInfo = new UserInfoResponseDto(userDetails.getUsername(),
-                    roles);
+            Optional<User> userOptional = userService.getUserByEmail(userDetails.getUsername());
+
+            if(userOptional.isEmpty()){
+                throw new RuntimeException("User does not exist by this email");
+            }
+            User user = userOptional.get();
+            UserInfoResponseDto userInfo = new UserInfoResponseDto(user.getId(), user.getEmail(), roles);
             return new ResponseEntity<>(userInfo,HttpStatus.OK);
         }
 

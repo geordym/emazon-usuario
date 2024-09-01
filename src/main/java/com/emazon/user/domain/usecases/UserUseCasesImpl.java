@@ -5,9 +5,11 @@ import com.emazon.user.domain.model.User;
 import com.emazon.user.domain.ports.in.UserUseCases;
 import com.emazon.user.domain.ports.out.Security.PasswordEncoderPort;
 import com.emazon.user.domain.ports.out.UserRepositoryPort;
+import com.emazon.user.infraestructure.entities.UserEntity;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class UserUseCasesImpl implements UserUseCases {
@@ -27,6 +29,11 @@ public class UserUseCasesImpl implements UserUseCases {
     @Override
     public List<User> getUsersByRoleId(Long roleId) {
         return userRepositoryPort.getUsersByRoleId(roleId);
+    }
+
+    @Override
+    public Optional<User> getUserByEmail(String email) {
+        return userRepositoryPort.findByEmail(email);
     }
 
 

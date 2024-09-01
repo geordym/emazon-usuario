@@ -29,6 +29,7 @@ public class UserMapper {
 
     public static User entityToDomain(UserEntity user){
        User userModel = UserFactory.createUserModel(
+               user.getId(),
                user.getFirstName(),
                user.getLastName(),
                user.getIdentityDocument(),
@@ -46,6 +47,7 @@ public class UserMapper {
     public static User dtoToDomain(CreateUserRequestDto createUserRequestDto){
         Role role = new Role(createUserRequestDto.getId_role(), "");
         User userModel =  UserFactory.createUserModel(
+                null,
                 createUserRequestDto.getFirstName(),
                 createUserRequestDto.getLastName(),
                 createUserRequestDto.getIdentityDocument(),
@@ -66,6 +68,7 @@ public class UserMapper {
 
         UserEntity userEntity = userEntityOpt.get();
         User userModel =  UserFactory.createUserModel(
+                userEntity.getId(),
                 userEntity.getFirstName(),
                 userEntity.getLastName(),
                 userEntity.getIdentityDocument(),

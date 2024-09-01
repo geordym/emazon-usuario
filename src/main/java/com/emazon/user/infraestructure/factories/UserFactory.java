@@ -39,10 +39,11 @@ public class UserFactory {
         return userEntity;
     }
 
-    public static User createUserModel(String firstName, String lastName, String identityDocument,
+    public static User createUserModel(Long id, String firstName, String lastName, String identityDocument,
                                   String phoneNumber, String email, String password,
                                   LocalDate birthDate, Role role) {
         User user = new User();
+        user.setId(id);
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setIdentityDocument(identityDocument);

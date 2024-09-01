@@ -7,6 +7,7 @@ import com.emazon.user.domain.ports.in.UserUseCases;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -21,6 +22,11 @@ public class UserService implements IUserService {
     @Override
     public List<User> getUsersByRoleId(Long roleId) {
         return userUseCases.getUsersByRoleId(roleId);
+    }
+
+    @Override
+    public Optional<User> getUserByEmail(String email) {
+        return userUseCases.getUserByEmail(email);
     }
 
 }

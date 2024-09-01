@@ -29,6 +29,7 @@ public class AdminSeeder implements CommandLineRunner, Ordered {
     public void run(String... args) throws Exception {
         Faker faker = new Faker();
         User userAdmin = UserFactory.createUserModel(
+                null,
                 faker.name().firstName(),
                 faker.name().lastName(),
                 faker.numerify("##########"),
