@@ -1,6 +1,7 @@
 package com.emazon.user.infraestructure.exceptionshandlers;
 
 
+import com.emazon.user.domain.exception.User.ClientNotFoundException;
 import com.emazon.user.infraestructure.exceptions.InvalidCredentialsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, String>> handleIllegalArgumentException(IllegalArgumentException e) {

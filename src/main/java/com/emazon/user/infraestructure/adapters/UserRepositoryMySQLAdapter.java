@@ -3,6 +3,7 @@ package com.emazon.user.infraestructure.adapters;
 import com.emazon.user.domain.model.User;
 import com.emazon.user.domain.ports.out.UserRepositoryPort;
 import com.emazon.user.infraestructure.entities.UserEntity;
+import com.emazon.user.infraestructure.enums.RoleEnum;
 import com.emazon.user.infraestructure.mapper.UserMapper;
 import com.emazon.user.infraestructure.repositories.UserCrudRepositoryMySQL;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,16 @@ public class UserRepositoryMySQLAdapter implements UserRepositoryPort {
     public Optional<User> findByEmail(String email) {
         Optional<UserEntity> userEntityOpt = userCrudRepositoryMySQL.findByEmail(email);
         return UserMapper.optionalEntityToOptionalDomain(userEntityOpt);
+    }
+
+    @Override
+    public Optional<User> findClientById(Long clientId) {
+        Optional<UserEntity> clientEntityOpt = userCrudRepositoryMySQL.findClientById(RoleEnum.CLIENTE.getId(), clientId);
+        if(clientEntityOpt.isEmpty()){
+            return Optional.empty();
+        }
+
+        return Optional.of(UserMapper.entityToDomain(clientEntityOpt.get()));
     }
 
     @Override

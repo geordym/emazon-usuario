@@ -3,6 +3,7 @@ package com.emazon.user.infraestructure.rest;
 
 import com.emazon.user.application.services.IUserService;
 import com.emazon.user.application.services.implementations.UserService;
+import com.emazon.user.domain.exception.User.ClientNotFoundException;
 import com.emazon.user.domain.model.User;
 import com.emazon.user.infraestructure.mapper.UserMapper;
 import com.emazon.user.infraestructure.rest.dto.request.User.*;
@@ -22,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,9 +32,23 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
-
     private final IUserService userService;
 
+    @GetMapping("/info/client/{clientId}")
+    public ResponseEntity<UserInfoResponseDto> getClientInfo(@PathVariable("clientId") Long clientId) {
+        Optional<User> clientOptional= userService.getClientById(clientId);
+        if(clientOptional.isEmpty()){
+            throw new ClientNotFoundException();
+        }
+
+        User user = clientOptional.get();
+        UserInfoResponseDto userInfo = new UserInfoResponseDto(
+                user.getId(),
+                user.getEmail(),
+                Collections.singletonList(user.getRole().getName())
+        );
+        return new ResponseEntity<>(userInfo,HttpStatus.OK);
+    }
 
     @GetMapping("/info")
     public ResponseEntity<UserInfoResponseDto> getUserInfo() {

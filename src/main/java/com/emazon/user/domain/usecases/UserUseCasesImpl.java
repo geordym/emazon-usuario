@@ -36,5 +36,10 @@ public class UserUseCasesImpl implements UserUseCases {
         return userRepositoryPort.findByEmail(email);
     }
 
+    @Override
+    public Optional<User> getClientById(Long clientId) {
+        return userRepositoryPort.findClientById(clientId);
+    }
+
 
 }

@@ -14,6 +14,8 @@ public interface UserCrudRepositoryMySQL extends JpaRepository<UserEntity, Long>
     boolean existsByEmail(String email);
 
     Optional<UserEntity> findByEmail(String email);
+    @Query("SELECT u FROM UserEntity u WHERE u.id = :clientId AND u.role.id = :rolClientId")
+    Optional<UserEntity> findClientById(Long rolClientId, Long clientId);
 
     boolean existsByIdentityDocument(String identityDocument);
 

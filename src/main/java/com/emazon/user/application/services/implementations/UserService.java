@@ -29,4 +29,9 @@ public class UserService implements IUserService {
         return userUseCases.getUserByEmail(email);
     }
 
+    @Override
+    public Optional<User> getClientById(Long clientId) {
+        return userUseCases.getClientById(clientId);
+    }
+
 }

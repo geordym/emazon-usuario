@@ -14,6 +14,7 @@ public interface UserRepositoryPort {
     boolean existsUserByIdentityDocument(String identity);
 
     Optional<User> findByEmail(String email);
+    Optional<User> findClientById(Long clientId);
 
     List<User> getUsersByRoleId(Long roleId);
 

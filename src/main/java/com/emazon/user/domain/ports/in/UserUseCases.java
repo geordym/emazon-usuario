@@ -10,4 +10,5 @@ public interface UserUseCases {
     List<User> getUsersByRoleId(Long roleId);
 
     Optional<User> getUserByEmail(String email);
+    Optional<User> getClientById(Long clientId);
 }
