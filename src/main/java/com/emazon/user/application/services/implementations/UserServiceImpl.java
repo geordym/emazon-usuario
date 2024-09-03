@@ -9,6 +9,7 @@ import com.emazon.user.domain.model.User;
 import com.emazon.user.domain.ports.in.UserUseCases;
 import com.emazon.user.application.dto.rest.dto.request.user.CreateUserRequestDto;
 import com.emazon.user.application.dto.rest.dto.response.user.UserInfoResponseDto;
+import com.emazon.user.infraestructure.enums.RoleEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -49,8 +50,9 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public String createUser(CreateUserRequestDto createUserRequestDto) {
+    public String createUser(CreateUserRequestDto createUserRequestDto, RoleEnum roleEnum) {
         User user = UserMapper.dtoToDomain(createUserRequestDto);
+        user.setRole(roleEnum.toModel());
         userUseCases.createUser(user);
         return "User saved sucesfully";
     }

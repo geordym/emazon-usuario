@@ -49,7 +49,7 @@ public class UserMapper {
     }
 
     public static User dtoToDomain(CreateUserRequestDto createUserRequestDto){
-        Role role = new Role(createUserRequestDto.getId_role(), "");
+       // Role role = new Role(createUserRequestDto.getId_role(), "");
         User userModel =  UserFactory.createUserModel(
                 null,
                 createUserRequestDto.getFirstName(),
@@ -59,7 +59,7 @@ public class UserMapper {
                 createUserRequestDto.getEmail(),
                 createUserRequestDto.getPassword(),
                 createUserRequestDto.getBirthDate(),
-                role
+                null
         );
 
         return userModel;

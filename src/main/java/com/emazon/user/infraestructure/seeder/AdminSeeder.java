@@ -35,14 +35,13 @@ public class AdminSeeder implements CommandLineRunner, Ordered {
                 "+" + faker.number().digits(10),
                 LocalDate.now().minusYears(MINIMUM_USER_AGE),
                 faker.internet().emailAddress(),
-                "admin1234",
-                RoleEnum.ADMINISTRADOR.getId()
+                "admin1234"
         );
 
         List<User> administradores =  userServiceImpl.getUsersByRoleId(RoleEnum.ADMINISTRADOR.getId());
         if (administradores.isEmpty()) {
             log.info("No administrator detected in the database, creating a default administrator.");
-            userServiceImpl.createUser(userAdmin);
+            userServiceImpl.createUser(userAdmin, RoleEnum.ADMINISTRADOR);
         }
         System.out.println("USUARIOS ADMINISTRADORES: " + administradores.size());
 

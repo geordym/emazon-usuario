@@ -4,6 +4,7 @@ package com.emazon.user.infraestructure.rest;
 import com.emazon.user.application.dto.rest.dto.request.user.CreateUserRequestDto;
 import com.emazon.user.application.services.IUserService;
 import com.emazon.user.application.dto.rest.dto.response.user.UserInfoResponseDto;
+import com.emazon.user.infraestructure.enums.RoleEnum;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -46,16 +47,32 @@ public class UserController {
             @ApiResponse(responseCode = "409", description = "User email or identityDocument exists in bd", content = @Content)
     })
 
-    @PostMapping
-    public ResponseEntity<String> createUser(
+    @PostMapping("/client")
+    public ResponseEntity<String> createUserClient(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Complete user details required for registration",
                     required = true, content = @Content(schema = @Schema(implementation = CreateUserRequestDto.class)))
             @RequestBody @Valid CreateUserRequestDto createUserRequestDto) {
-
-        String response = userService.createUser(createUserRequestDto);
+        String response = userService.createUser(createUserRequestDto, RoleEnum.CLIENTE);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @PostMapping("/administrator")
+    public ResponseEntity<String> createUserAdministrator(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Complete user details required for registration",
+                    required = true, content = @Content(schema = @Schema(implementation = CreateUserRequestDto.class)))
+            @RequestBody @Valid CreateUserRequestDto createUserRequestDto) {
+        String response = userService.createUser(createUserRequestDto, RoleEnum.ADMINISTRADOR);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/aux-bodega")
+    public ResponseEntity<String> createUserAuxBodega(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Complete user details required for registration",
+                    required = true, content = @Content(schema = @Schema(implementation = CreateUserRequestDto.class)))
+            @RequestBody @Valid CreateUserRequestDto createUserRequestDto) {
+        String response = userService.createUser(createUserRequestDto, RoleEnum.AUX_BODEGA);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
 
 
 

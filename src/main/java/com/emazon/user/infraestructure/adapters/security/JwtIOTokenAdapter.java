@@ -1,22 +1,20 @@
 package com.emazon.user.infraestructure.adapters.security;
 
+import com.emazon.user.domain.configuration.JwtSecurityConstants;
 import com.emazon.user.domain.ports.out.security.TokenProviderPort;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.Map;
 
+import static com.emazon.user.domain.configuration.JwtSecurityConstants.*;
+
 public class JwtIOTokenAdapter implements TokenProviderPort {
-
-
-    private String SECRET_KEY = "3nKAe0ytwn6XSOf/7mI7mmyiRrdVvcl4YVy9kG6ChaI=";
-    private final String CLAIM_SUBJECT_KEY = "sub";
-    private final String CLAIM_EXPIRATION_KEY = "exp";
-    private final String CLAIM_EXPEDITION_KEY = "iat";
 
 
     @Override
@@ -39,7 +37,8 @@ public class JwtIOTokenAdapter implements TokenProviderPort {
     @Override
     public Boolean isTokenExpired(String token) {
         Date expirationDate = extractExpiration(token);
-        return expirationDate.before(new Date());
+        boolean expired = expirationDate.before(new Date());
+        return expired;
     }
 
     @Override
@@ -55,26 +54,31 @@ public class JwtIOTokenAdapter implements TokenProviderPort {
 
     @Override
     public Map<String, Object> extractAllClaims(String token) {
+        byte[] secret = SECRET_KEY.getBytes();
+
         Claims claims =  Jwts.parser()
-                .setSigningKey(SECRET_KEY)
+                .setSigningKey(secret)
                 .build().parseSignedClaims(token).getPayload();
         return claims;
     }
 
     @Override
     public Date extractExpiration(String token) {
-        return (Date) extractClaim(token, CLAIM_EXPIRATION_KEY);
-    }
+        final int SECONDS_TO_MILLISECONDS_MULTIPLIER = 1000;
+        Long expirationTimeSeconds = (Long) extractClaim(token, CLAIM_EXPIRATION_KEY);
 
+        if (expirationTimeSeconds != null) {
+            long expirationTimeMillis = expirationTimeSeconds * SECONDS_TO_MILLISECONDS_MULTIPLIER;
+            return new Date(expirationTimeMillis);
+        }
+
+        return null;
+    }
     private String createAccessToken(Map<String, Object> claims, String subject, LocalDateTime issuedAt, LocalDateTime expirationAt) {
         Date issuedAtDate = convertToDate(issuedAt);
         Date expirationDate = convertToDate(expirationAt);
 
-        return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(subject)
-                .setIssuedAt(issuedAtDate)
-                .setExpiration(expirationDate)
+        return Jwts.builder().claims(claims).subject(subject).issuedAt(issuedAtDate).expiration(expirationDate)
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY.getBytes())
                 .compact();
     }

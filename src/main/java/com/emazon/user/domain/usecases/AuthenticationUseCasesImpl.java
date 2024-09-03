@@ -1,5 +1,6 @@
 package com.emazon.user.domain.usecases;
 
+import com.emazon.user.application.dto.rest.dto.request.authentication.AuthenticationRequestDto;
 import com.emazon.user.domain.exception.User.InvalidUsernameOrPasswordException;
 import com.emazon.user.domain.model.AuthToken;
 import com.emazon.user.domain.model.Role;
@@ -14,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import static com.emazon.user.domain.configuration.JwtSecurityConstants.*;
+
 
 @RequiredArgsConstructor
 public class AuthenticationUseCasesImpl implements AuthenticationUseCases {
@@ -22,9 +25,7 @@ public class AuthenticationUseCasesImpl implements AuthenticationUseCases {
     private final UserRepositoryPort userRepositoryPort;
     private final TokenProviderPort tokenProviderPort;
 
-    private final Long ACCESS_TOKEN_DURATION_MINUTES = 900L;
-    private final Long REFRESH_TOKEN_DURATION_MINUTES = 1400L;
-    private final String KEY_ROLE_CLAIM = "role";
+
 
     @Override
     public AuthToken authenticateUser(UserAuthentication userAuthentication) {

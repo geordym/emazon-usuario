@@ -22,10 +22,9 @@ public class AuthenticationController {
     private final IAuthenticationService authenticationService;
 
     @PostMapping
-    public ResponseEntity<AuthToken> authenticateUser(@RequestBody @Valid AuthenticationRequestDto authenticationRequest) throws Exception {
-        UserAuthentication userAuthentication = new UserAuthentication(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-        AuthToken authToken = authenticationService.authenticateUser(userAuthentication);
-
+    public ResponseEntity<AuthToken> authenticateUser(@RequestBody @Valid AuthenticationRequestDto
+                                                                  authenticationRequest) throws Exception {
+        AuthToken authToken = authenticationService.authenticateUser(authenticationRequest);
         return new ResponseEntity<>(authToken, HttpStatus.OK);
     }
 

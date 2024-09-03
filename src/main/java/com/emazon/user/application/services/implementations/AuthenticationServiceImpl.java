@@ -1,5 +1,6 @@
 package com.emazon.user.application.services.implementations;
 
+import com.emazon.user.application.dto.rest.dto.request.authentication.AuthenticationRequestDto;
 import com.emazon.user.application.services.IAuthenticationService;
 import com.emazon.user.domain.model.AuthToken;
 import com.emazon.user.domain.model.UserAuthentication;
@@ -12,8 +13,12 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
     private final AuthenticationUseCases authenticationUseCases;
 
     @Override
-    public AuthToken authenticateUser(UserAuthentication userAuthentication) {
+    public AuthToken authenticateUser(AuthenticationRequestDto authenticationRequestDto) {
+        UserAuthentication userAuthentication =
+                new UserAuthentication(authenticationRequestDto.getUsername(),
+                        authenticationRequestDto.getPassword());
         return authenticationUseCases.authenticateUser(userAuthentication);
     }
+
 
 }

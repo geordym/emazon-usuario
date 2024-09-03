@@ -44,13 +44,7 @@ public class CreateUserRequestDto {
     @Size(min = 8, message = "Password should be at least 8 characters long")
     private String password;
 
-    @Schema(description = "Role ID for the user. Possible values are: " +
-            "1 (AUX_BODEGA), 2 (USER), 3 (ADMINISTRATOR)",
-            required = true,
-            allowableValues = {"1","2", "3"},
-            example = "1",
-            type = "integer")
-    private Long id_role;
+
 
 
 }
