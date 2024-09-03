@@ -1,4 +1,4 @@
-package com.emazon.user.infraestructure.configuration.Security;
+package com.emazon.user.infraestructure.configuration.security;
 
 
 import com.emazon.user.domain.exception.User.UsernameNotFoundException;

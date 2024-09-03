@@ -1,4 +1,4 @@
-package com.emazon.user.infraestructure.rest.dto.response.user;
+package com.emazon.user.application.dto.rest.dto.response.user;
 
 import lombok.Getter;
 import lombok.Setter;

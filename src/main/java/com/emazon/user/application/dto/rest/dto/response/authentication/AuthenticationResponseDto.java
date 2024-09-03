@@ -1,4 +1,4 @@
-package com.emazon.user.infraestructure.rest.dto.response.authentication;
+package com.emazon.user.application.dto.rest.dto.response.authentication;
 
 
 import lombok.AllArgsConstructor;

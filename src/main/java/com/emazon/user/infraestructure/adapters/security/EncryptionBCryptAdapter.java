@@ -1,4 +1,4 @@
-package com.emazon.user.infraestructure.adapters.Security;
+package com.emazon.user.infraestructure.adapters.security;
 
 import com.emazon.user.domain.ports.out.Security.PasswordEncoderPort;
 import lombok.RequiredArgsConstructor;

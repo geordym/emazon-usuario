@@ -1,8 +1,9 @@
-package com.emazon.user.infraestructure.rest.dto.request.User;
+package com.emazon.user.application.dto.rest.dto.request.user;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class CreateUserRequestDto {
 
     @NotBlank(message = "First name is mandatory")

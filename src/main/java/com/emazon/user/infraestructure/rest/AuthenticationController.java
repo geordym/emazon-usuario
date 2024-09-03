@@ -1,18 +1,14 @@
 package com.emazon.user.infraestructure.rest;
 
 
-import com.emazon.user.infraestructure.configuration.Security.JwtUtil;
-import com.emazon.user.infraestructure.configuration.Security.MyUserDetailsService;
-import com.emazon.user.infraestructure.exceptions.InvalidCredentialsException;
-import com.emazon.user.infraestructure.rest.dto.request.authentication.AuthenticationRequestDto;
-import com.emazon.user.infraestructure.rest.dto.response.authentication.AuthenticationResponseDto;
+import com.emazon.user.application.services.IAuthenticationService;
+import com.emazon.user.domain.model.AuthToken;
+import com.emazon.user.domain.model.UserAuthentication;
+import com.emazon.user.application.dto.rest.dto.request.authentication.AuthenticationRequestDto;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,30 +16,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/authenticate")
+@RequiredArgsConstructor
 public class AuthenticationController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private JwtUtil jwtUtil;
-
-    @Autowired
-    private MyUserDetailsService userDetailsService;
+    private final IAuthenticationService authenticationService;
 
     @PostMapping
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody @Valid AuthenticationRequestDto authenticationRequest) throws Exception {
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
-            );
-        } catch (BadCredentialsException e) {
-            throw new InvalidCredentialsException();
-        }
+    public ResponseEntity<AuthToken> authenticateUser(@RequestBody @Valid AuthenticationRequestDto authenticationRequest) throws Exception {
+        UserAuthentication userAuthentication = new UserAuthentication(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+        AuthToken authToken = authenticationService.authenticateUser(userAuthentication);
 
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-        final String jwt = jwtUtil.generateToken(userDetails.getUsername(), userDetails.getAuthorities());
-        return ResponseEntity.ok(new AuthenticationResponseDto(jwt));
+        return new ResponseEntity<>(authToken, HttpStatus.OK);
     }
 
 

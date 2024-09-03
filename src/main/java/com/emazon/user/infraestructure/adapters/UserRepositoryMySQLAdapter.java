@@ -4,11 +4,9 @@ import com.emazon.user.domain.model.User;
 import com.emazon.user.domain.ports.out.UserRepositoryPort;
 import com.emazon.user.infraestructure.entities.UserEntity;
 import com.emazon.user.infraestructure.enums.RoleEnum;
-import com.emazon.user.infraestructure.mapper.UserMapper;
+import com.emazon.user.application.mapper.rest.UserMapper;
 import com.emazon.user.infraestructure.repositories.UserCrudRepositoryMySQL;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;

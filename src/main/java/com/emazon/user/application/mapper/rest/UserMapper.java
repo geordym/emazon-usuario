@@ -1,10 +1,10 @@
-package com.emazon.user.infraestructure.mapper;
+package com.emazon.user.application.mapper.rest;
 
 import com.emazon.user.domain.model.Role;
 import com.emazon.user.domain.model.User;
 import com.emazon.user.infraestructure.entities.UserEntity;
 import com.emazon.user.infraestructure.factories.UserFactory;
-import com.emazon.user.infraestructure.rest.dto.request.User.CreateUserRequestDto;
+import com.emazon.user.application.dto.rest.dto.request.user.CreateUserRequestDto;
 
 import java.util.Optional;
 

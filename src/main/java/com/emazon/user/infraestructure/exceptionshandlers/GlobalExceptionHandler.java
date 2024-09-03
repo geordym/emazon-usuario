@@ -2,6 +2,7 @@ package com.emazon.user.infraestructure.exceptionshandlers;
 
 
 import com.emazon.user.domain.exception.User.ClientNotFoundException;
+import com.emazon.user.domain.exception.User.InvalidUsernameOrPasswordException;
 import com.emazon.user.infraestructure.exceptions.InvalidCredentialsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,14 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(InvalidUsernameOrPasswordException.class)
+    public ResponseEntity<Map<String, String>> handleInvalidUsernameOrPasswordException(InvalidUsernameOrPasswordException e) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("error", e.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(errorResponse);
+    }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, String>> handleIllegalArgumentException(IllegalArgumentException e) {

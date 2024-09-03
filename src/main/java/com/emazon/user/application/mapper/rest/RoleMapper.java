@@ -1,4 +1,4 @@
-package com.emazon.user.infraestructure.mapper;
+package com.emazon.user.application.mapper.rest;
 
 import com.emazon.user.domain.model.Role;
 import com.emazon.user.infraestructure.entities.RoleEntity;

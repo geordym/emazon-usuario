@@ -1,22 +1,57 @@
 package com.emazon.user.application.services.implementations;
 
 
+import com.emazon.user.application.mapper.rest.UserMapper;
 import com.emazon.user.application.services.IUserService;
+import com.emazon.user.domain.exception.User.ClientNotFoundException;
 import com.emazon.user.domain.model.User;
 import com.emazon.user.domain.ports.in.UserUseCases;
+import com.emazon.user.application.dto.rest.dto.request.user.CreateUserRequestDto;
+import com.emazon.user.application.dto.rest.dto.response.user.UserInfoResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor
 public class UserService implements IUserService {
 
     private final UserUseCases userUseCases;
+
     @Override
-    public User createUser(User user) {
-        return userUseCases.createUser(user);
+    public UserInfoResponseDto getUserInfoByAuthenticationContext() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !(authentication.getPrincipal() instanceof UserDetails)) {
+            throw new RuntimeException("Not authenticated user");
+        }
+
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            List<String> roles = userDetails.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .collect(Collectors.toList());
+            Optional<User> userOptional = userUseCases.getUserByEmail(userDetails.getUsername());
+
+            if(userOptional.isEmpty()){
+                throw new RuntimeException("User does not exist by this email");
+            }
+
+            User user = userOptional.get();
+            UserInfoResponseDto userInfo = new UserInfoResponseDto(user.getId(), user.getEmail(), roles);
+        return userInfo;
+    }
+
+    @Override
+    public String createUser(CreateUserRequestDto createUserRequestDto) {
+        User user = UserMapper.dtoToDomain(createUserRequestDto);
+        userUseCases.createUser(user);
+        return "User saved sucesfully";
     }
 
     @Override
@@ -25,13 +60,20 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Optional<User> getUserByEmail(String email) {
-        return userUseCases.getUserByEmail(email);
+    public UserInfoResponseDto getClientInfoById(Long clientId) {
+        Optional<User> clientOptional= userUseCases.getClientById(clientId);
+        if(clientOptional.isEmpty()){
+            throw new ClientNotFoundException();
+        }
+
+        User user = clientOptional.get();
+        UserInfoResponseDto userInfo = new UserInfoResponseDto(
+                user.getId(),
+                user.getEmail(),
+                Collections.singletonList(user.getRole().getName())
+        );
+        return userInfo;
     }
 
-    @Override
-    public Optional<User> getClientById(Long clientId) {
-        return userUseCases.getClientById(clientId);
-    }
 
 }

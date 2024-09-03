@@ -2,7 +2,7 @@ package com.emazon.user.infraestructure.adapters;
 
 import com.emazon.user.domain.model.Role;
 import com.emazon.user.domain.ports.out.RoleRepositoryPort;
-import com.emazon.user.infraestructure.mapper.RoleMapper;
+import com.emazon.user.application.mapper.rest.RoleMapper;
 import com.emazon.user.infraestructure.repositories.RoleCrudRepositoryMySQL;
 import lombok.RequiredArgsConstructor;
 

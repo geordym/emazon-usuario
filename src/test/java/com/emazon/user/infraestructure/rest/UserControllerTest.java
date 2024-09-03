@@ -4,7 +4,7 @@ package com.emazon.user.infraestructure.rest;
 import com.emazon.user.domain.ports.out.UserRepositoryPort;
 import com.emazon.user.domain.util.ErrorMessages;
 import com.emazon.user.infraestructure.enums.RoleEnum;
-import com.emazon.user.infraestructure.rest.dto.request.User.CreateUserRequestDto;
+import com.emazon.user.application.dto.rest.dto.request.user.CreateUserRequestDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.BeforeEach;

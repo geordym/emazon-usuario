@@ -1,13 +1,9 @@
 package com.emazon.user.infraestructure.rest;
 
 
+import com.emazon.user.application.dto.rest.dto.request.user.CreateUserRequestDto;
 import com.emazon.user.application.services.IUserService;
-import com.emazon.user.application.services.implementations.UserService;
-import com.emazon.user.domain.exception.User.ClientNotFoundException;
-import com.emazon.user.domain.model.User;
-import com.emazon.user.infraestructure.mapper.UserMapper;
-import com.emazon.user.infraestructure.rest.dto.request.User.*;
-import com.emazon.user.infraestructure.rest.dto.response.user.UserInfoResponseDto;
+import com.emazon.user.application.dto.rest.dto.response.user.UserInfoResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -17,16 +13,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/users")
@@ -36,40 +23,15 @@ public class UserController {
 
     @GetMapping("/info/client/{clientId}")
     public ResponseEntity<UserInfoResponseDto> getClientInfo(@PathVariable("clientId") Long clientId) {
-        Optional<User> clientOptional= userService.getClientById(clientId);
-        if(clientOptional.isEmpty()){
-            throw new ClientNotFoundException();
-        }
-
-        User user = clientOptional.get();
-        UserInfoResponseDto userInfo = new UserInfoResponseDto(
-                user.getId(),
-                user.getEmail(),
-                Collections.singletonList(user.getRole().getName())
-        );
+        UserInfoResponseDto userInfo = userService.getClientInfoById(clientId);
         return new ResponseEntity<>(userInfo,HttpStatus.OK);
     }
 
     @GetMapping("/info")
-    public ResponseEntity<UserInfoResponseDto> getUserInfo() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            List<String> roles = userDetails.getAuthorities().stream()
-                    .map(GrantedAuthority::getAuthority)
-                    .collect(Collectors.toList());
-            Optional<User> userOptional = userService.getUserByEmail(userDetails.getUsername());
-
-            if(userOptional.isEmpty()){
-                throw new RuntimeException("User does not exist by this email");
-            }
-            User user = userOptional.get();
-            UserInfoResponseDto userInfo = new UserInfoResponseDto(user.getId(), user.getEmail(), roles);
-            return new ResponseEntity<>(userInfo,HttpStatus.OK);
-        }
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(null);
+    public ResponseEntity<UserInfoResponseDto> getUserInfoByAuthenticationContext() {
+        UserInfoResponseDto userInfoResponseDto = userService.getUserInfoByAuthenticationContext();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(userInfoResponseDto);
     }
 
 
@@ -83,14 +45,15 @@ public class UserController {
             @ApiResponse(responseCode = "400", description = "Invalid input", content = @Content),
             @ApiResponse(responseCode = "409", description = "User email or identityDocument exists in bd", content = @Content)
     })
+
     @PostMapping
     public ResponseEntity<String> createUser(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Complete user details required for registration",
                     required = true, content = @Content(schema = @Schema(implementation = CreateUserRequestDto.class)))
             @RequestBody @Valid CreateUserRequestDto createUserRequestDto) {
 
-        userService.createUser(UserMapper.dtoToDomain(createUserRequestDto));
-        return new ResponseEntity<>("User created succesfully", HttpStatus.CREATED);
+        String response = userService.createUser(createUserRequestDto);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
 
