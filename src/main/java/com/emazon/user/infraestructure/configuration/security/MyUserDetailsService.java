@@ -1,6 +1,9 @@
 package com.emazon.user.infraestructure.configuration.security;
 
 
+import com.emazon.user.application.dto.infraestructure.InternalUserInfoResponseDto;
+import com.emazon.user.application.dto.rest.dto.response.user.UserInfoResponseDto;
+import com.emazon.user.application.services.IUserService;
 import com.emazon.user.domain.exception.User.UsernameNotFoundException;
 import com.emazon.user.domain.model.User;
 import com.emazon.user.domain.ports.out.UserRepositoryPort;
@@ -16,18 +19,18 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MyUserDetailsService implements UserDetailsService {
 
-    private final UserRepositoryPort userRepositoryPort;
+    private final IUserService userService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepositoryPort.findByEmail(username);
+        Optional<InternalUserInfoResponseDto> user = userService.getUserInfoByEmail(username);
 
         if (user.isPresent()) {
-            User userObj = user.get();
+            InternalUserInfoResponseDto userObj = user.get();
             UserDetails userDetails = org.springframework.security.core.userdetails.User.builder()
-                    .username(userObj.getEmail())
+                    .username(userObj.getUsername())
                     .password(userObj.getPassword())
-                    .authorities(userObj.getRole().getName())
+                    .authorities(userObj.getRoles().get(0))
                     .accountExpired(false)
                     .accountLocked(false)
                     .credentialsExpired(false)

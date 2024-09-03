@@ -1,6 +1,7 @@
 package com.emazon.user.application.services.implementations;
 
 
+import com.emazon.user.application.dto.infraestructure.InternalUserInfoResponseDto;
 import com.emazon.user.application.mapper.rest.UserMapper;
 import com.emazon.user.application.services.IUserService;
 import com.emazon.user.domain.exception.User.ClientNotFoundException;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor
-public class UserService implements IUserService {
+public class UserServiceImpl implements IUserService {
 
     private final UserUseCases userUseCases;
 
@@ -52,6 +53,20 @@ public class UserService implements IUserService {
         User user = UserMapper.dtoToDomain(createUserRequestDto);
         userUseCases.createUser(user);
         return "User saved sucesfully";
+    }
+
+    @Override
+    public Optional<InternalUserInfoResponseDto> getUserInfoByEmail(String email) {
+        Optional<User> userOptional = userUseCases.getUserByEmail(email);
+        if(userOptional.isEmpty()){
+            return Optional.empty();
+        }
+        User user = userOptional.get();
+        InternalUserInfoResponseDto internalUserInfoResponseDto =
+                new InternalUserInfoResponseDto(
+                        user.getId(), user.getEmail(),
+                        Collections.singletonList(user.getRole().getName()), user.getPassword());
+        return Optional.of(internalUserInfoResponseDto);
     }
 
     @Override

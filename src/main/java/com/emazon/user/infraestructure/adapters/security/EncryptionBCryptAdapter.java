@@ -1,6 +1,6 @@
 package com.emazon.user.infraestructure.adapters.security;
 
-import com.emazon.user.domain.ports.out.Security.PasswordEncoderPort;
+import com.emazon.user.domain.ports.out.security.PasswordEncoderPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 

@@ -1,7 +1,7 @@
 package com.emazon.user.infraestructure.configuration;
 
 
-import com.emazon.user.domain.ports.out.Security.PasswordEncoderPort;
+import com.emazon.user.domain.ports.out.security.PasswordEncoderPort;
 import com.emazon.user.infraestructure.adapters.security.EncryptionBCryptAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

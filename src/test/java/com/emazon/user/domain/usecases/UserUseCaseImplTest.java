@@ -7,7 +7,7 @@ import com.emazon.user.domain.exception.User.PasswordFormatException;
 import com.emazon.user.domain.model.Role;
 import com.emazon.user.domain.model.User;
 import com.emazon.user.domain.ports.out.RoleRepositoryPort;
-import com.emazon.user.domain.ports.out.Security.PasswordEncoderPort;
+import com.emazon.user.domain.ports.out.security.PasswordEncoderPort;
 import com.emazon.user.domain.ports.out.UserRepositoryPort;
 import com.emazon.user.infraestructure.enums.RoleEnum;
 import org.junit.jupiter.api.BeforeEach;

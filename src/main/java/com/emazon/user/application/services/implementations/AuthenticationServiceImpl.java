@@ -7,7 +7,7 @@ import com.emazon.user.domain.ports.in.AuthenticationUseCases;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class AuthenticationService implements IAuthenticationService {
+public class AuthenticationServiceImpl implements IAuthenticationService {
 
     private final AuthenticationUseCases authenticationUseCases;
 

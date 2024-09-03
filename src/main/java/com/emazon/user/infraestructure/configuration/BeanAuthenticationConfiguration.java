@@ -1,10 +1,10 @@
 package com.emazon.user.infraestructure.configuration;
 
 import com.emazon.user.application.services.IAuthenticationService;
-import com.emazon.user.application.services.implementations.AuthenticationService;
+import com.emazon.user.application.services.implementations.AuthenticationServiceImpl;
 import com.emazon.user.domain.ports.in.AuthenticationUseCases;
-import com.emazon.user.domain.ports.out.Security.PasswordEncoderPort;
-import com.emazon.user.domain.ports.out.Security.TokenProviderPort;
+import com.emazon.user.domain.ports.out.security.PasswordEncoderPort;
+import com.emazon.user.domain.ports.out.security.TokenProviderPort;
 import com.emazon.user.domain.ports.out.UserRepositoryPort;
 import com.emazon.user.domain.usecases.AuthenticationUseCasesImpl;
 import com.emazon.user.infraestructure.adapters.security.JwtIOTokenAdapter;
@@ -28,7 +28,7 @@ public class BeanAuthenticationConfiguration {
 
     @Bean
     public IAuthenticationService authenticationService(AuthenticationUseCases authenticationUseCases){
-        return new AuthenticationService(authenticationUseCases);
+        return new AuthenticationServiceImpl(authenticationUseCases);
     }
 
 }

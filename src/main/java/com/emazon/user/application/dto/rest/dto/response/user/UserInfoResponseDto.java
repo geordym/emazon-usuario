@@ -11,11 +11,11 @@ public class UserInfoResponseDto {
     public Long idUser;
     public String username;
     private List<String> roles;
+
     public UserInfoResponseDto(Long idUser, String username, List<String> roles) {
         this.idUser = idUser;
         this.username = username;
         this.roles = roles;
     }
 
-    // Getters y Setters
 }
