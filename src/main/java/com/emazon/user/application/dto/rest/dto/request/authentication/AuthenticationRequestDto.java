@@ -5,9 +5,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @Getter
+@NoArgsConstructor
 public class AuthenticationRequestDto {
     @NotBlank(message = AuthenticationValidationConstants.USERNAME_MANDATORY)
     @Size(max = AuthenticationValidationConstants.USERNAME_MAX_SIZE, message = AuthenticationValidationConstants.USERNAME_SIZE)

@@ -29,7 +29,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final UserDetailsService userDetailsService;
     private final TokenProviderPort tokenProviderPort;
-    private final JwtUtil jwtUtil;
     private final ObjectMapper objectMapper;
 
     private final String ERROR_HEADER_RESPONSE = "Authentication Error";
@@ -52,13 +51,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         final String authorizationHeader = request.getHeader("Authorization");
 
-        Long userId = null;
+        String subject = null;
         String jwt = null;
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             jwt = authorizationHeader.substring(7);
             try {
-                userId = jwtUtil.extractUserId(jwt);
+                subject = tokenProviderPort.extractSubject(jwt);
             } catch (ExpiredJwtException e) {
                 String json = objectMapper.writeValueAsString(tokenExpiredResponse);
                 response.setContentType("application/json");
@@ -76,15 +75,18 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             }
         }
 
-        if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (subject != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
             try{
                 CustomUserDetails userDetails = (CustomUserDetails) this.userDetailsService.loadUserByUsername(jwt);
-                if (jwtUtil.validateToken(jwt, userDetails)) {
-                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                if (tokenProviderPort.validateToken(jwt, subject)) {
+                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                            new UsernamePasswordAuthenticationToken(
                             userDetails, jwt, userDetails.getAuthorities());
+
                     usernamePasswordAuthenticationToken
                             .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
                     createSecurityContext(usernamePasswordAuthenticationToken);
                 }
             }catch (UsernameNotFoundException u ){

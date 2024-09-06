@@ -6,22 +6,22 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 public class CustomUserDetails implements UserDetails {
-    private final Long userId;
+    private final String userId;
     private final String username;
     private final String password;
     private final Collection<? extends GrantedAuthority> authorities;
     private final boolean isActive;
 
-    public CustomUserDetails(Long userId, String username, String password,
+    public CustomUserDetails(String userId, String password,
                              Collection<? extends GrantedAuthority> authorities,
                              boolean isActive) {
         this.userId = userId;
-        this.username = username;
+        this.username = null;
         this.password = password;
         this.authorities = authorities;
         this.isActive = isActive;
     }
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 

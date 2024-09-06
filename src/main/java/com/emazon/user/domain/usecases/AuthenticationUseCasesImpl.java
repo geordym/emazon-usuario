@@ -40,8 +40,8 @@ public class AuthenticationUseCasesImpl implements AuthenticationUseCases {
         validatePassword(userAuthentication.getPassword(), userFounded.getPassword());
         Map<String, Object> claims = createClaims(userFounded);
 
-        String accessToken = generateAccessToken(userFounded.getId(), claims);
-        String refreshToken = generateRefreshToken(userFounded.getId());
+        String accessToken = generateAccessToken(String.valueOf(userFounded.getId()), claims);
+        String refreshToken = generateRefreshToken(String.valueOf(userFounded.getId()));
 
         AuthToken authToken = new AuthToken(accessToken,refreshToken);
         return authToken;
@@ -49,7 +49,7 @@ public class AuthenticationUseCasesImpl implements AuthenticationUseCases {
 
     public Map<String, Object> createClaims(User user){
         Map<String, Object> claims = new HashMap<>();
-       // claims.put(CLAIM_SUBJECT_KEY, user.getId());
+       claims.put(CLAIM_SUBJECT_KEY, user.getEmail());
         claims.put(KEY_ROLE_CLAIM, user.getRole().getName());
         return claims;
     }
@@ -63,13 +63,13 @@ public class AuthenticationUseCasesImpl implements AuthenticationUseCases {
         }
     }
 
-    public String generateAccessToken(Long subject, Map<String, Object> claims) {
+    public String generateAccessToken(String subject, Map<String, Object> claims) {
         LocalDateTime issuedAt = LocalDateTime.now();
         LocalDateTime expirationAt = issuedAt.plusMinutes(ACCESS_TOKEN_DURATION_MINUTES);
         return tokenProviderPort.generateAccessToken(issuedAt, subject, expirationAt, claims);
     }
 
-    public String generateRefreshToken(Long subject) {
+    public String generateRefreshToken(String subject) {
         LocalDateTime issuedAt = LocalDateTime.now();
         LocalDateTime expirationAt = issuedAt.plusMinutes(REFRESH_TOKEN_DURATION_MINUTES);
         return tokenProviderPort.generateRefreshToken(issuedAt, subject, expirationAt);

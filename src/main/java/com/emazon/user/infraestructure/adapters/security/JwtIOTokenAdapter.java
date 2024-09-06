@@ -5,6 +5,7 @@ import com.emazon.user.domain.ports.out.security.TokenProviderPort;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -16,14 +17,17 @@ import static com.emazon.user.domain.configuration.JwtSecurityConstants.*;
 
 public class JwtIOTokenAdapter implements TokenProviderPort {
 
+    @Value("${jwt.secure.key}")
+    private String SECRET_KEY;
+
 
     @Override
-    public String generateAccessToken(LocalDateTime issuedAt, Long subject, LocalDateTime expirationAt, Map<String, Object> claims) {
+    public String generateAccessToken(LocalDateTime issuedAt, String subject, LocalDateTime expirationAt, Map<String, Object> claims) {
         return createAccessToken(claims, subject, issuedAt, expirationAt);
     }
 
     @Override
-    public String generateRefreshToken(LocalDateTime issuedAt, Long subject, LocalDateTime expirationAt) {
+    public String generateRefreshToken(LocalDateTime issuedAt, String subject, LocalDateTime expirationAt) {
         return createRefreshToken(subject, issuedAt, expirationAt);
     }
 
@@ -42,6 +46,19 @@ public class JwtIOTokenAdapter implements TokenProviderPort {
     }
 
     @Override
+    public Long extractUserId(String token) {
+        final Map<String, Object> claims = extractAllClaims(token);
+        String userId = (String) claims.get(CLAIM_KEY_USERID);
+        return Long.valueOf(userId);
+    }
+
+    @Override
+    public String extractRole(String token) {
+        final Map<String, Object> claims = extractAllClaims(token);
+        return (String) claims.get(CLAIM_KEY_ROLE);
+    }
+
+    @Override
     public Object extractClaim(String token, String claimKey) {
         Map<String, Object> claims = extractAllClaims(token);
         return claims.get(claimKey);
@@ -49,6 +66,11 @@ public class JwtIOTokenAdapter implements TokenProviderPort {
 
     @Override
     public String extractUsername(String token) {
+        return (String) extractClaim(token, CLAIM_KEY_USERNAME);
+    }
+
+    @Override
+    public String extractSubject(String token) {
         return (String) extractClaim(token, CLAIM_SUBJECT_KEY);
     }
 
@@ -74,7 +96,7 @@ public class JwtIOTokenAdapter implements TokenProviderPort {
 
         return null;
     }
-    private String createAccessToken(Map<String, Object> claims, Long subject, LocalDateTime issuedAt, LocalDateTime expirationAt) {
+    private String createAccessToken(Map<String, Object> claims, String subject, LocalDateTime issuedAt, LocalDateTime expirationAt) {
         Date issuedAtDate = convertToDate(issuedAt);
         Date expirationDate = convertToDate(expirationAt);
 
@@ -83,12 +105,12 @@ public class JwtIOTokenAdapter implements TokenProviderPort {
                 .compact();
     }
 
-    private String createRefreshToken(Long subject, LocalDateTime issuedAt, LocalDateTime expirationAt) {
+    private String createRefreshToken(String subject, LocalDateTime issuedAt, LocalDateTime expirationAt) {
         Date issuedAtDate = issuedAt != null ? convertToDate(issuedAt) : new Date();
         Date expirationDate = expirationAt != null ? convertToDate(expirationAt) : new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 30); // 30 días por defecto
 
         return Jwts.builder()
-                .setSubject(String.valueOf(subject))
+                .setSubject(subject)
                 .setIssuedAt(issuedAtDate)
                 .setExpiration(expirationDate)
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY.getBytes())
