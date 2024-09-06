@@ -124,7 +124,7 @@ public class UserValidator {
         return pattern.matcher(email).matches();
     }
 
-    private void validateRole(Role role) {
+    protected void validateRole(Role role) {
         if (role == null) {
             throw new IllegalArgumentException("Role cannot be null or empty");
         }

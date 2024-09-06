@@ -16,6 +16,8 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import static com.emazon.user.domain.configuration.JwtSecurityConstants.*;
+import static com.emazon.user.domain.util.Constantes.SECURITY_EMAIL_MIN_LENGTH;
+import static com.emazon.user.domain.util.Constantes.SECURITY_PASSWORD_MIN_LENGTH;
 
 
 @RequiredArgsConstructor
@@ -29,6 +31,15 @@ public class AuthenticationUseCasesImpl implements AuthenticationUseCases {
 
     @Override
     public AuthToken authenticateUser(UserAuthentication userAuthentication) {
+
+        if(userAuthentication.getEmail() == null || userAuthentication.getPassword() == null){
+            throw new IllegalArgumentException();
+        }
+
+        if(userAuthentication.getEmail().length() < SECURITY_EMAIL_MIN_LENGTH || userAuthentication.getPassword().length() < SECURITY_PASSWORD_MIN_LENGTH){
+            throw new IllegalArgumentException();
+        }
+
         String username = userAuthentication.getEmail();
         Optional<User> user = userRepositoryPort.findByEmail(username);
 
@@ -48,15 +59,28 @@ public class AuthenticationUseCasesImpl implements AuthenticationUseCases {
     }
 
     public Map<String, Object> createClaims(User user){
+        if(user == null){
+            throw new IllegalArgumentException();
+        }
+
+        if(user.getRole() == null || user.getRole().getName() == null || user.getRole().getName().isEmpty() || user.getId() == null){
+            throw new IllegalArgumentException();
+        }
+
         Map<String, Object> claims = new HashMap<>();
-       claims.put(CLAIM_SUBJECT_KEY, user.getEmail());
+       claims.put(CLAIM_SUBJECT_KEY, user.getId());
         claims.put(KEY_ROLE_CLAIM, user.getRole().getName());
         return claims;
     }
 
 
 
-    private void validatePassword(String providedPassword, String storedPassword) {
+    public void validatePassword(String providedPassword, String storedPassword) {
+
+        if(providedPassword == null || storedPassword == null || providedPassword.isEmpty() || storedPassword.isEmpty()){
+            throw new IllegalArgumentException();
+        }
+
         boolean isPasswordValid = passwordEncoderPort.matches(providedPassword, storedPassword);
         if (!isPasswordValid) {
             throw new InvalidUsernameOrPasswordException();

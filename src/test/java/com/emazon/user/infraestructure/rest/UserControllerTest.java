@@ -2,7 +2,10 @@ package com.emazon.user.infraestructure.rest;
 
 
 import com.emazon.user.domain.ports.out.UserRepositoryPort;
+import com.emazon.user.domain.ports.out.security.TokenProviderPort;
 import com.emazon.user.domain.util.ErrorMessages;
+import com.emazon.user.infraestructure.configuration.security.JwtRequestFilter;
+import com.emazon.user.infraestructure.configuration.security.MyUserDetailsService;
 import com.emazon.user.infraestructure.enums.RoleEnum;
 import com.emazon.user.application.dto.rest.dto.request.user.CreateUserRequestDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,11 +36,18 @@ public class UserControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+    @MockBean
+    private JwtRequestFilter jwtRequestFilter;
 
+    @MockBean
+    private MyUserDetailsService myUserDetailsService;
     @Autowired
     private ObjectMapper objectMapper;
     @MockBean
     private UserRepositoryPort userRepositoryPort;
+
+    @MockBean
+    private TokenProviderPort tokenProviderPort;
 
     CreateUserRequestDto createUserRequestDtoValid = new CreateUserRequestDto();
 
@@ -61,7 +72,7 @@ public class UserControllerTest {
         String userJson = objectMapper.writeValueAsString(createUserRequestDtoValid);
 
         // Realiza la solicitud POST con el JSON como cuerpo
-        mockMvc.perform(post("/api/users")
+        mockMvc.perform(post("/api/users/register/warehouse-assistant")
                         .contentType("application/json")
                         .content(userJson))
                 .andExpect(status().isCreated());
@@ -69,25 +80,21 @@ public class UserControllerTest {
 
     @Test
     public void Expect_RoleNotFoundException_When_RolePassedDoesNotExist() throws Exception {
-        Long invalidRolId = 1999999L;
-        //createUserRequestDtoValid.setId_role(invalidRolId);
         String userJson = objectMapper.writeValueAsString(createUserRequestDtoValid);
 
         // Realiza la solicitud POST con el JSON como cuerpo
-        mockMvc.perform(post("/api/users")
+        mockMvc.perform(post("/api/users/warehouse-assistant")
                         .contentType("application/json")
                         .content(userJson))
                 .andExpect(status().isNotFound()) // Verifica que el estado sea 404 Not Found
-                .andExpect(jsonPath("$.error").value(String.format(ErrorMessages.ROLE_NOT_FOUND, invalidRolId)));
+                .andExpect(jsonPath("$.error").value(String.format(ErrorMessages.ROLE_NOT_FOUND)));
     }
 
-    @ParameterizedTest
-    @MethodSource("provideRoleIds")
-    public void When_UserDataIsValidAndRoleExist_Expect_UserCreated(Long idRol) throws Exception {
-        //createUserRequestDtoValid.setId_role(idRol);
+    @Test
+    public void When_UserDataIsValidAndRoleExist_Expect_UserCreated() throws Exception {
         String userJson = objectMapper.writeValueAsString(createUserRequestDtoValid);
 
-        mockMvc.perform(post("/api/users")
+        mockMvc.perform(post("/api/users/register/client")
                         .contentType("application/json")
                         .content(userJson))
                 .andExpect(status().isCreated());
@@ -100,7 +107,7 @@ public class UserControllerTest {
         when(userRepositoryPort.existsUserByEmail(createUserRequestDtoValid.getEmail()))
                 .thenReturn(true);
 
-        mockMvc.perform(post("/api/users")
+        mockMvc.perform(post("/api/users/register/client")
                         .contentType("application/json")
                         .content(userJson))
                 .andExpect(status().isConflict()) // Verifica que el estado sea 404 Not Found
@@ -127,7 +134,7 @@ public class UserControllerTest {
         when(userRepositoryPort.existsUserByIdentityDocument(identityDocument)).thenReturn(true);
 
 
-        mockMvc.perform(post("/api/users")
+        mockMvc.perform(post("/api/users/client")
                         .contentType("application/json")
                         .content(userJson))
                 .andExpect(status().isConflict())
@@ -142,7 +149,7 @@ public class UserControllerTest {
         createUserRequestDtoValid.setBirthDate(birthdayDateInvalid);
         String userJson = objectMapper.writeValueAsString(createUserRequestDtoValid);
 
-        mockMvc.perform(post("/api/users")
+        mockMvc.perform(post("/api/users/client")
                         .contentType("application/json")
                         .content(userJson))
                 .andExpect(status().isBadRequest())
@@ -156,7 +163,7 @@ public class UserControllerTest {
         createUserRequestDtoValid.setBirthDate(birthdayDateValid);
         String userJson = objectMapper.writeValueAsString(createUserRequestDtoValid);
 
-        mockMvc.perform(post("/api/users")
+        mockMvc.perform(post("/api/users/client")
                         .contentType("application/json")
                         .content(userJson))
                 .andExpect(status().isCreated());
