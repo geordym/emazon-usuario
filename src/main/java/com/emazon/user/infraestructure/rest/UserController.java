@@ -1,13 +1,15 @@
 package com.emazon.user.infraestructure.rest;
 
 
+import com.emazon.user.application.dto.general.GenericResponseDto;
 import com.emazon.user.application.dto.rest.dto.request.user.CreateUserRequestDto;
 import com.emazon.user.application.services.IUserService;
 import com.emazon.user.application.dto.rest.dto.response.user.UserInfoResponseDto;
 import com.emazon.user.infraestructure.enums.RoleEnum;
+import com.emazon.user.infraestructure.rest.constants.HttpStatusCodes;
+import com.emazon.user.infraestructure.rest.constants.SwaggerConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
@@ -15,6 +17,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+
+import static com.emazon.user.infraestructure.rest.constants.RestConstants.CREATE_USER_CLIENT_MESSAGE;
 
 @RestController
 @RequestMapping("/api/users")
@@ -37,41 +43,35 @@ public class UserController {
 
 
     @Operation(
-            summary = "Register a New User",
-            description = "This endpoint allows the registration of a new user by providing all the necessary details such as personal information, contact details, and the associated role. " +
-                    "Ensure that all mandatory fields are filled correctly. A successful registration returns a confirmation message."
+            summary = SwaggerConstants.REGISTER_CLIENT_SUMMARY,
+            description = SwaggerConstants.REGISTER_CLIENT_DESCRIPTION
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "User created successfully", content = @Content),
-            @ApiResponse(responseCode = "400", description = "Invalid input", content = @Content),
-            @ApiResponse(responseCode = "409", description = "User email or identityDocument exists in bd", content = @Content)
+            @ApiResponse(responseCode = HttpStatusCodes.HTTP_CREATED, description = SwaggerConstants.REGISTER_CLIENT_API_RESPONSES_201_DESCRIPTION, content = @Content),
+            @ApiResponse(responseCode = HttpStatusCodes.HTTP_BAD_REQUEST, description = SwaggerConstants.REGISTER_CLIENT_API_RESPONSES_400_DESCRIPTION, content = @Content),
+            @ApiResponse(responseCode = HttpStatusCodes.HTTP_CONFLICT, description = SwaggerConstants.REGISTER_CLIENT_API_RESPONSES_409_DESCRIPTION, content = @Content)
     })
-
-    @PostMapping("/client")
-    public ResponseEntity<String> createUserClient(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Complete user details required for registration",
-                    required = true, content = @Content(schema = @Schema(implementation = CreateUserRequestDto.class)))
-            @RequestBody @Valid CreateUserRequestDto createUserRequestDto) {
-        String response = userService.createUser(createUserRequestDto, RoleEnum.CLIENTE);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    @PostMapping("/register/client")
+    public ResponseEntity<GenericResponseDto> registerUserClient(@RequestBody @Valid CreateUserRequestDto createUserRequestDto) {
+        userService.createUser(createUserRequestDto, RoleEnum.CLIENTE);
+        GenericResponseDto genericResponseDto = new GenericResponseDto(CREATE_USER_CLIENT_MESSAGE, LocalDateTime.now().toString());
+        return new ResponseEntity<>(genericResponseDto, HttpStatus.CREATED);
     }
 
-    @PostMapping("/administrator")
-    public ResponseEntity<String> createUserAdministrator(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Complete user details required for registration",
-                    required = true, content = @Content(schema = @Schema(implementation = CreateUserRequestDto.class)))
-            @RequestBody @Valid CreateUserRequestDto createUserRequestDto) {
-        String response = userService.createUser(createUserRequestDto, RoleEnum.ADMINISTRADOR);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
-    }
-
-    @PostMapping("/aux-bodega")
-    public ResponseEntity<String> createUserAuxBodega(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Complete user details required for registration",
-                    required = true, content = @Content(schema = @Schema(implementation = CreateUserRequestDto.class)))
-            @RequestBody @Valid CreateUserRequestDto createUserRequestDto) {
-        String response = userService.createUser(createUserRequestDto, RoleEnum.AUX_BODEGA);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    @PostMapping("/register/warehouse-assistant")
+    @Operation(
+            summary = SwaggerConstants.REGISTER_WAREHOUSE_ASSISTANT_SUMMARY,
+            description = SwaggerConstants.REGISTER_WAREHOUSE_ASSISTANT_DESCRIPTION
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = HttpStatusCodes.HTTP_CREATED, description = SwaggerConstants.REGISTER_WAREHOUSE_ASSISTANT_API_RESPONSES_201_DESCRIPTION, content = @Content),
+            @ApiResponse(responseCode = HttpStatusCodes.HTTP_BAD_REQUEST, description = SwaggerConstants.REGISTER_WAREHOUSE_ASSISTANT_API_RESPONSES_400_DESCRIPTION, content = @Content),
+            @ApiResponse(responseCode = HttpStatusCodes.HTTP_CONFLICT, description = SwaggerConstants.REGISTER_WAREHOUSE_ASSISTANT_API_RESPONSES_409_DESCRIPTION, content = @Content)
+    })
+    public ResponseEntity<GenericResponseDto> registerUserWarehouseAssistant(@RequestBody @Valid CreateUserRequestDto createUserRequestDto) {
+        userService.createUser(createUserRequestDto, RoleEnum.WAREHOUSE_ASSISTANT);
+        GenericResponseDto genericResponseDto = new GenericResponseDto(SwaggerConstants.CREATE_USER_WAREHOUSE_ASSISTANT_MESSAGE, LocalDateTime.now().toString());
+        return new ResponseEntity<>(genericResponseDto, HttpStatus.CREATED);
     }
 
 

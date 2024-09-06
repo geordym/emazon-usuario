@@ -11,8 +11,8 @@ import java.util.function.Function;
 
 public interface TokenProviderPort {
 
-    String generateAccessToken(LocalDateTime issuedAt, String subject, LocalDateTime expirationAt, Map<String, Object> claims);
-    String generateRefreshToken(LocalDateTime issuedAt, String subject, LocalDateTime expirationAt);
+    String generateAccessToken(LocalDateTime issuedAt, Long subject, LocalDateTime expirationAt, Map<String, Object> claims);
+    String generateRefreshToken(LocalDateTime issuedAt, Long subject, LocalDateTime expirationAt);
     Object extractClaim(String token, String claimKey);
     String extractUsername(String token);
     Map<String, Object> extractAllClaims(String token);

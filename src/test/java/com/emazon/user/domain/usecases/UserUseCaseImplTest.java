@@ -46,10 +46,11 @@ public class UserUseCaseImplTest {
 
     private String validEmail = "test@gmail.com";
     private String validPassword = "TestPassword123#";
+    private String validPhoneNumber = "+573026468094";
 
     @BeforeEach
     void setup(){
-        roleWareHouseAssistant = new Role(RoleEnum.AUX_BODEGA.getId(), RoleEnum.AUX_BODEGA.getName());
+        roleWareHouseAssistant = new Role(RoleEnum.WAREHOUSE_ASSISTANT.getId(), RoleEnum.WAREHOUSE_ASSISTANT.getName());
         userValidator = new UserValidator(userRepositoryPort, roleRepositoryPort);
 
         userUseCases = new UserUseCasesImpl(passwordEncoderPort,userValidator, userRepositoryPort);
@@ -62,6 +63,7 @@ public class UserUseCaseImplTest {
         user.setPassword(validPassword);
         user.setRole(roleWareHouseAssistant);
         user.setBirthDate(LocalDate.now().minusYears(MINIMUM_USER_AGE));
+        user.setPhoneNumber(validPhoneNumber);
 
         when(roleRepositoryPort.existsRolById(roleWareHouseAssistant.getId())).thenReturn(true);
         when(userRepositoryPort.createUser(user)).thenReturn(user);

@@ -18,12 +18,12 @@ public class JwtIOTokenAdapter implements TokenProviderPort {
 
 
     @Override
-    public String generateAccessToken(LocalDateTime issuedAt, String subject, LocalDateTime expirationAt, Map<String, Object> claims) {
+    public String generateAccessToken(LocalDateTime issuedAt, Long subject, LocalDateTime expirationAt, Map<String, Object> claims) {
         return createAccessToken(claims, subject, issuedAt, expirationAt);
     }
 
     @Override
-    public String generateRefreshToken(LocalDateTime issuedAt, String subject, LocalDateTime expirationAt) {
+    public String generateRefreshToken(LocalDateTime issuedAt, Long subject, LocalDateTime expirationAt) {
         return createRefreshToken(subject, issuedAt, expirationAt);
     }
 
@@ -74,21 +74,21 @@ public class JwtIOTokenAdapter implements TokenProviderPort {
 
         return null;
     }
-    private String createAccessToken(Map<String, Object> claims, String subject, LocalDateTime issuedAt, LocalDateTime expirationAt) {
+    private String createAccessToken(Map<String, Object> claims, Long subject, LocalDateTime issuedAt, LocalDateTime expirationAt) {
         Date issuedAtDate = convertToDate(issuedAt);
         Date expirationDate = convertToDate(expirationAt);
 
-        return Jwts.builder().claims(claims).subject(subject).issuedAt(issuedAtDate).expiration(expirationDate)
+        return Jwts.builder().claims(claims).subject(String.valueOf(subject)).issuedAt(issuedAtDate).expiration(expirationDate)
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY.getBytes())
                 .compact();
     }
 
-    private String createRefreshToken(String subject, LocalDateTime issuedAt, LocalDateTime expirationAt) {
+    private String createRefreshToken(Long subject, LocalDateTime issuedAt, LocalDateTime expirationAt) {
         Date issuedAtDate = issuedAt != null ? convertToDate(issuedAt) : new Date();
         Date expirationDate = expirationAt != null ? convertToDate(expirationAt) : new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 30); // 30 días por defecto
 
         return Jwts.builder()
-                .setSubject(subject)
+                .setSubject(String.valueOf(subject))
                 .setIssuedAt(issuedAtDate)
                 .setExpiration(expirationDate)
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY.getBytes())

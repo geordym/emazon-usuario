@@ -1,47 +1,37 @@
 package com.emazon.user.infraestructure.configuration.security;
 
 
-import com.emazon.user.application.dto.infraestructure.InternalUserInfoResponseDto;
-import com.emazon.user.application.dto.rest.dto.response.user.UserInfoResponseDto;
-import com.emazon.user.application.services.IUserService;
-import com.emazon.user.domain.exception.User.UsernameNotFoundException;
-import com.emazon.user.domain.model.User;
-import com.emazon.user.domain.ports.out.UserRepositoryPort;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.Arrays;
+import java.util.Collection;
 
 
 @Service
 @RequiredArgsConstructor
 public class MyUserDetailsService implements UserDetailsService {
 
-    private final IUserService userService;
-
+    private final JwtUtil jwtUtil;
+    private final String USERNAME_NOT_FOUND_MESSAGE = "The username has been not found";
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<InternalUserInfoResponseDto> user = userService.getUserInfoByEmail(username);
+    public UserDetails loadUserByUsername(String token){
+        Long userId = jwtUtil.extractUserId(token);
+        String role = jwtUtil.extractRole(token);
 
-        if (user.isPresent()) {
-            InternalUserInfoResponseDto userObj = user.get();
-            UserDetails userDetails = org.springframework.security.core.userdetails.User.builder()
-                    .username(userObj.getUsername())
-                    .password(userObj.getPassword())
-                    .authorities(userObj.getRoles().get(0))
-                    .accountExpired(false)
-                    .accountLocked(false)
-                    .credentialsExpired(false)
-                    .disabled(false)
-                    .build();
-
+        if (userId != null && userId > 0) {
+            Collection<GrantedAuthority> authorities = Arrays.asList(
+                    new SimpleGrantedAuthority(role)
+            );
+            CustomUserDetails userDetails = new CustomUserDetails(userId, userId.toString(), token, authorities, true);
             return userDetails;
         } else {
-            throw new UsernameNotFoundException(username);
+            throw new UsernameNotFoundException(USERNAME_NOT_FOUND_MESSAGE);
         }
     }
-
-
 }

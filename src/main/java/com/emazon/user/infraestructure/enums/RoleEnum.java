@@ -8,21 +8,28 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public enum RoleEnum {
-    AUX_BODEGA(1L, "AUX_BODEGA"),
-    CLIENTE(2L, "CLIENT"),
-    ADMINISTRADOR(3L, "ADMINISTRATOR");
+    WAREHOUSE_ASSISTANT(1L, "ROLE_WAREHOUSE_ASSISTANT", "WAREHOUSE_ASSISTANT"),
+    CLIENTE(2L, "ROLE_CLIENT", "CLIENT"),
+    ADMINISTRADOR(3L, "ROLE_ADMINISTRATOR", "ADMINISTRATOR");
 
 
     private final Long id;
+    private final String name_bd;
     private final String name;
 
-    RoleEnum(Long id, String name) {
+    RoleEnum(Long id, String name_bd, String name) {
         this.id = id;
+        this.name_bd = name_bd;
         this.name = name;
     }
 
     public Long getId() {
         return id;
+    }
+
+
+    public String getName_bd() {
+        return name_bd;
     }
 
     public String getName() {
@@ -62,7 +69,7 @@ public enum RoleEnum {
     public RoleEntity toEntity() {
         RoleEntity roleEntity = new RoleEntity();
         roleEntity.setId(this.id);
-        roleEntity.setName(this.name);
+        roleEntity.setName(this.name_bd);
         return roleEntity;
     }
 

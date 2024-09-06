@@ -1,7 +1,7 @@
 package com.emazon.user.application.services.implementations;
 
 
-import com.emazon.user.application.dto.infraestructure.InternalUserInfoResponseDto;
+import com.emazon.user.application.dto.security.InternalUserInfoResponseDto;
 import com.emazon.user.application.mapper.rest.UserMapper;
 import com.emazon.user.application.services.IUserService;
 import com.emazon.user.domain.exception.User.ClientNotFoundException;
@@ -50,11 +50,10 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public String createUser(CreateUserRequestDto createUserRequestDto, RoleEnum roleEnum) {
+    public void createUser(CreateUserRequestDto createUserRequestDto, RoleEnum roleEnum) {
         User user = UserMapper.dtoToDomain(createUserRequestDto);
         user.setRole(roleEnum.toModel());
         userUseCases.createUser(user);
-        return "User saved sucesfully";
     }
 
     @Override

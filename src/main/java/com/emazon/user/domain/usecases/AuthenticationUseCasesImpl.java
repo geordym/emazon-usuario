@@ -38,20 +38,23 @@ public class AuthenticationUseCasesImpl implements AuthenticationUseCases {
 
         User userFounded = user.get();
         validatePassword(userAuthentication.getPassword(), userFounded.getPassword());
-        Map<String, Object> claims = createRoleClaims(userFounded.getRole());
+        Map<String, Object> claims = createClaims(userFounded);
 
-        String accessToken = generateAccessToken(userFounded.getEmail(), claims);
-        String refreshToken = generateRefreshToken(userFounded.getEmail());
+        String accessToken = generateAccessToken(userFounded.getId(), claims);
+        String refreshToken = generateRefreshToken(userFounded.getId());
 
         AuthToken authToken = new AuthToken(accessToken,refreshToken);
         return authToken;
     }
 
-    private Map<String, Object> createRoleClaims(Role role) {
+    public Map<String, Object> createClaims(User user){
         Map<String, Object> claims = new HashMap<>();
-        claims.put(KEY_ROLE_CLAIM, role.getName());
+       // claims.put(CLAIM_SUBJECT_KEY, user.getId());
+        claims.put(KEY_ROLE_CLAIM, user.getRole().getName());
         return claims;
     }
+
+
 
     private void validatePassword(String providedPassword, String storedPassword) {
         boolean isPasswordValid = passwordEncoderPort.matches(providedPassword, storedPassword);
@@ -60,13 +63,13 @@ public class AuthenticationUseCasesImpl implements AuthenticationUseCases {
         }
     }
 
-    public String generateAccessToken(String subject, Map<String, Object> claims) {
+    public String generateAccessToken(Long subject, Map<String, Object> claims) {
         LocalDateTime issuedAt = LocalDateTime.now();
         LocalDateTime expirationAt = issuedAt.plusMinutes(ACCESS_TOKEN_DURATION_MINUTES);
         return tokenProviderPort.generateAccessToken(issuedAt, subject, expirationAt, claims);
     }
 
-    public String generateRefreshToken(String subject) {
+    public String generateRefreshToken(Long subject) {
         LocalDateTime issuedAt = LocalDateTime.now();
         LocalDateTime expirationAt = issuedAt.plusMinutes(REFRESH_TOKEN_DURATION_MINUTES);
         return tokenProviderPort.generateRefreshToken(issuedAt, subject, expirationAt);

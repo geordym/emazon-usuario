@@ -1,4 +1,4 @@
-package com.emazon.user.application.dto.infraestructure;
+package com.emazon.user.application.dto.security;
 
 import java.util.List;
 

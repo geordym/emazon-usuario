@@ -39,10 +39,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(registry -> {
                     registry.requestMatchers("/api/users").hasAuthority(RoleEnum.ADMINISTRADOR.getName().toString());
                     registry.requestMatchers("/api/users/info/client/**").permitAll();
-                    registry.requestMatchers("/api/users/aux-bodega").hasAuthority(RoleEnum.ADMINISTRADOR.getName().toString());
-                    registry.requestMatchers("/api/users/client").hasAuthority(RoleEnum.ADMINISTRADOR.getName().toString());
-                    registry.requestMatchers("/api/users/administrator").hasAuthority(RoleEnum.ADMINISTRADOR.getName().toString());
-
+                    registry.requestMatchers("/api/users/register/warehouse-assistant").hasRole(RoleEnum.ADMINISTRADOR.getName().toString());
+                    registry.requestMatchers("/api/users/register/client").hasRole(RoleEnum.ADMINISTRADOR.getName().toString());
 
                     registry.requestMatchers("/api/authenticate").permitAll();
                 })

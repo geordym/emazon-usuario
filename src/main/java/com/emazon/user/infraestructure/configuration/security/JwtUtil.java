@@ -3,21 +3,30 @@ package com.emazon.user.infraestructure.configuration.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Function;
 
 @Component
 public class JwtUtil {
 
-    private String SECRET_KEY = "3nKAe0ytwn6XSOf/7mI7mmyiRrdVvcl4YVy9kG6ChaI=";
+    @Value("${jwt.secure.key}")
+    private String SECRET_KEY;
+    private final String CLAIM_KEY_ROLE = "role";
+    private final String CLAIM_KEY_SUBJECT = "sub";
+    public Long extractUserId(String token) {
+        final Claims claims = extractAllClaims(token);
+        String subject = (String) claims.get(CLAIM_KEY_SUBJECT);
+        return Long.valueOf(subject);
+    }
+
+    public String extractRole(String token) {
+        final Claims claims = extractAllClaims(token);
+        return (String) claims.get(CLAIM_KEY_ROLE);
+    }
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -33,8 +42,9 @@ public class JwtUtil {
     }
 
     private Claims extractAllClaims(String token) {
+        byte[] tokenBytes = SECRET_KEY.getBytes();
         return Jwts.parser()
-                .setSigningKey(SECRET_KEY)
+                .setSigningKey(tokenBytes)
                 .build().parseSignedClaims(token).getPayload();
     }
 

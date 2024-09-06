@@ -15,36 +15,32 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateUserRequestDto {
-
-    @NotBlank(message = "First name is mandatory")
-    @Size(max = 50, message = "First name should not exceed 50 characters")
+    @NotBlank(message = CreateUserValidationConstants.FIRST_NAME_MANDATORY)
+    @Size(max = CreateUserValidationConstants.FIRST_NAME_MAX_SIZE, message = CreateUserValidationConstants.FIRST_NAME_SIZE)
     private String firstName;
 
-    @NotBlank(message = "Last name is mandatory")
-    @Size(max = 50, message = "Last name should not exceed 50 characters")
+    @NotBlank(message = CreateUserValidationConstants.LAST_NAME_MANDATORY)
+    @Size(max = CreateUserValidationConstants.LAST_NAME_MAX_SIZE, message = CreateUserValidationConstants.LAST_NAME_SIZE)
     private String lastName;
 
-    @NotBlank(message = "Identity document is mandatory")
-    @Pattern(regexp = "\\d+", message = "Identity document must be numeric")
+    @NotBlank(message = CreateUserValidationConstants.IDENTITY_DOCUMENT_MANDATORY)
+    @Pattern(regexp = CreateUserValidationConstants.IDENTITY_DOCUMENT_REGEX, message = CreateUserValidationConstants.IDENTITY_DOCUMENT_PATTERN)
     private String identityDocument;
 
-    @NotBlank(message = "Phone number is mandatory")
-    @Pattern(regexp = "^\\+?\\d{1,13}$", message = "Phone number must be a valid format and not exceed 13 characters")
+    @NotBlank(message = CreateUserValidationConstants.PHONE_NUMBER_MANDATORY)
+    @Pattern(regexp = CreateUserValidationConstants.PHONE_NUMBER_REGEX, message = CreateUserValidationConstants.PHONE_NUMBER_PATTERN)
     private String phoneNumber;
 
-    @NotNull(message = "Birth date is mandatory")
+    @NotNull(message = CreateUserValidationConstants.BIRTH_DATE_MANDATORY)
     private LocalDate birthDate;
 
-    @NotBlank(message = "Email is mandatory")
-    @Email(message = "Email should be valid")
-    @Size(max = 100, message = "Email should not exceed 100 characters")
+    @NotBlank(message = CreateUserValidationConstants.EMAIL_MANDATORY)
+    @Email(message = CreateUserValidationConstants.EMAIL_INVALID)
+    @Size(max = CreateUserValidationConstants.EMAIL_MAX_SIZE, message = CreateUserValidationConstants.EMAIL_SIZE)
     private String email;
 
-    @NotBlank(message = "Password is mandatory")
-    @Size(min = 8, message = "Password should be at least 8 characters long")
+    @NotBlank(message = CreateUserValidationConstants.PASSWORD_MANDATORY)
+    @Size(min = CreateUserValidationConstants.PASSWORD_MIN_SIZE, message = CreateUserValidationConstants.PASSWORD_SIZE)
     private String password;
-
-
-
 
 }

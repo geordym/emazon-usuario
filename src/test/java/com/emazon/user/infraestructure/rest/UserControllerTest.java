@@ -52,7 +52,6 @@ public class UserControllerTest {
         createUserRequestDtoValid.setPhoneNumber("+" + faker.numerify("############"));
         createUserRequestDtoValid.setBirthDate(LocalDate.now().minusYears(MINIMUM_USER_AGE));
         createUserRequestDtoValid.setIdentityDocument(faker.numerify("##########"));
-        createUserRequestDtoValid.setId_role(RoleEnum.AUX_BODEGA.getId());
     }
 
 
@@ -71,7 +70,7 @@ public class UserControllerTest {
     @Test
     public void Expect_RoleNotFoundException_When_RolePassedDoesNotExist() throws Exception {
         Long invalidRolId = 1999999L;
-        createUserRequestDtoValid.setId_role(invalidRolId);
+        //createUserRequestDtoValid.setId_role(invalidRolId);
         String userJson = objectMapper.writeValueAsString(createUserRequestDtoValid);
 
         // Realiza la solicitud POST con el JSON como cuerpo
@@ -85,7 +84,7 @@ public class UserControllerTest {
     @ParameterizedTest
     @MethodSource("provideRoleIds")
     public void When_UserDataIsValidAndRoleExist_Expect_UserCreated(Long idRol) throws Exception {
-        createUserRequestDtoValid.setId_role(idRol);
+        //createUserRequestDtoValid.setId_role(idRol);
         String userJson = objectMapper.writeValueAsString(createUserRequestDtoValid);
 
         mockMvc.perform(post("/api/users")
