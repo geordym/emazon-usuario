@@ -68,7 +68,7 @@ public class AuthenticationUseCasesImpl implements AuthenticationUseCases {
         }
 
         Map<String, Object> claims = new HashMap<>();
-       claims.put(CLAIM_SUBJECT_KEY, user.getId());
+       claims.put(CLAIM_SUBJECT_KEY, String.valueOf(user.getId()));
         claims.put(KEY_ROLE_CLAIM, user.getRole().getName());
         return claims;
     }

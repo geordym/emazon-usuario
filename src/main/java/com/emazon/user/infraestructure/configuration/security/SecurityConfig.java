@@ -40,7 +40,7 @@ public class SecurityConfig {
                     registry.requestMatchers("/api/users").hasAuthority(RoleEnum.ADMINISTRADOR.getName().toString());
                     registry.requestMatchers("/api/users/info/client/**").permitAll();
                     registry.requestMatchers("/api/users/register/warehouse-assistant").hasRole(RoleEnum.ADMINISTRADOR.getName().toString());
-                    registry.requestMatchers("/api/users/register/client").hasRole(RoleEnum.ADMINISTRADOR.getName().toString());
+                    registry.requestMatchers("/api/users/register/client").permitAll();
 
                     registry.requestMatchers("/api/authenticate").permitAll();
                 })
