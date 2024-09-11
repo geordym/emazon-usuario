@@ -27,6 +27,11 @@ import java.time.LocalDateTime;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
 
+    public static final String AUTHORIZATION = "Authorization";
+    public static final String BEARER_ = "Bearer ";
+    public static final int BEGIN_INDEX = 7;
+    public static final String CONTENT_TYPE = "application/json";
+    public static final String UTF_8 = "UTF-8";
     private final UserDetailsService userDetailsService;
     private final TokenProviderPort tokenProviderPort;
     private final ObjectMapper objectMapper;
@@ -49,26 +54,26 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
 
-        final String authorizationHeader = request.getHeader("Authorization");
+        final String authorizationHeader = request.getHeader(AUTHORIZATION);
 
         String subject = null;
         String jwt = null;
 
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            jwt = authorizationHeader.substring(7);
+        if (authorizationHeader != null && authorizationHeader.startsWith(BEARER_)) {
+            jwt = authorizationHeader.substring(BEGIN_INDEX);
             try {
                 subject = tokenProviderPort.extractSubject(jwt);
             } catch (ExpiredJwtException e) {
                 String json = objectMapper.writeValueAsString(tokenExpiredResponse);
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
+                response.setContentType(CONTENT_TYPE);
+                response.setCharacterEncoding(UTF_8);
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.getWriter().write(json);
                 return;
             } catch (JwtException jwtException){
                 String json = objectMapper.writeValueAsString(invalidCredentialsError);
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
+                response.setContentType(CONTENT_TYPE);
+                response.setCharacterEncoding(UTF_8);
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.getWriter().write(json);
                 return;
@@ -91,8 +96,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 }
             }catch (UsernameNotFoundException u ){
                 String json = objectMapper.writeValueAsString(invalidCredentialsError);
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
+                response.setContentType(CONTENT_TYPE);
+                response.setCharacterEncoding(UTF_8);
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.getWriter().write(json);
                 return;

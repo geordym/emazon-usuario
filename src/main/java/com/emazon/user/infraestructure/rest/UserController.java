@@ -71,7 +71,7 @@ public class UserController {
     })
     @PostMapping("/register/client")
     public ResponseEntity<GenericResponseDto> registerUserClient(@RequestBody @Valid CreateUserRequestDto createUserRequestDto) {
-        userService.createUser(createUserRequestDto, RoleEnum.CLIENTE);
+        userService.createUserClient(createUserRequestDto);
         GenericResponseDto genericResponseDto = new GenericResponseDto(CREATE_USER_CLIENT_MESSAGE, LocalDateTime.now().toString());
         return new ResponseEntity<>(genericResponseDto, HttpStatus.CREATED);
     }
@@ -87,7 +87,7 @@ public class UserController {
     })
     @PostMapping("/register/warehouse-assistant")
     public ResponseEntity<GenericResponseDto> registerUserWarehouseAssistant(@RequestBody @Valid CreateUserRequestDto createUserRequestDto) {
-        userService.createUser(createUserRequestDto, RoleEnum.WAREHOUSE_ASSISTANT);
+        userService.createUserWarehouseAssistant(createUserRequestDto);
         GenericResponseDto genericResponseDto = new GenericResponseDto(SwaggerConstants.CREATE_USER_WAREHOUSE_ASSISTANT_MESSAGE, LocalDateTime.now().toString());
         return new ResponseEntity<>(genericResponseDto, HttpStatus.CREATED);
     }

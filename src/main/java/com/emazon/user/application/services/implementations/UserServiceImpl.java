@@ -50,9 +50,16 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public void createUser(CreateUserRequestDto createUserRequestDto, RoleEnum roleEnum) {
+    public void createUserWarehouseAssistant(CreateUserRequestDto createUserRequestDto) {
         User user = UserMapper.dtoToDomain(createUserRequestDto);
-        user.setRole(roleEnum.toModel());
+        user.setRole(RoleEnum.WAREHOUSE_ASSISTANT.toModel());
+        userUseCases.createUser(user);
+    }
+
+    @Override
+    public void createUserClient(CreateUserRequestDto createUserRequestDto) {
+        User user = UserMapper.dtoToDomain(createUserRequestDto);
+        user.setRole(RoleEnum.CLIENTE.toModel());
         userUseCases.createUser(user);
     }
 

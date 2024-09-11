@@ -12,7 +12,9 @@ import java.util.Optional;
 public interface IUserService {
     UserInfoResponseDto getClientInfoById(Long userId);
     UserInfoResponseDto getUserInfoByAuthenticationContext();
-    void createUser(CreateUserRequestDto createUserRequestDto, RoleEnum roleEnum);
+    void createUserWarehouseAssistant(CreateUserRequestDto createUserRequestDto);
+    void createUserClient(CreateUserRequestDto createUserRequestDto);
+
     Optional<InternalUserInfoResponseDto> getUserInfoByEmail(String email);
     List<User> getUsersByRoleId(Long roleId);
 }

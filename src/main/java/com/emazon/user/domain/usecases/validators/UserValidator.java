@@ -20,6 +20,13 @@ import static com.emazon.user.domain.util.Constantes.*;
 @RequiredArgsConstructor
 public class UserValidator {
 
+    public static final String NUMBER_EMPTYORNULL_MESSAGE = "El número de teléfono no puede ser nulo o vacío.";
+    public static final String NUMBER_PREFIX = "+";
+    public static final String NUMBER_PREFIX_MESSAGE = "Debe contener el codigo de pais al inicio, ejemplo, +57";
+    public static final String NUMBER_SIZE_TOOLONG_MESSAGE = "El numero de telefono es demasiado grande";
+    public static final String BIRTHDAY_NULL_MESSAGE = "The birthDate cannot be null";
+    public static final String PASSWORD_NULLOREMPTY_MESSAGE = "Password cannot be null or empty";
+    public static final String ROLE_CANNOT_BE_NULL_OR_EMPTY_MESSAGE = "Role cannot be null or empty";
     private final UserRepositoryPort userRepositoryPort;
     private final RoleRepositoryPort roleRepositoryPort;
 
@@ -36,23 +43,17 @@ public class UserValidator {
 
     public void validatePhoneNumber(String phoneNumber) {
         if (phoneNumber == null || phoneNumber.isEmpty()) {
-            throw new IllegalArgumentException("El número de teléfono no puede ser nulo o vacío.");
+            throw new IllegalArgumentException(NUMBER_EMPTYORNULL_MESSAGE);
         }
 
-        String regex = "^\\+?\\d{1,13}$";
-        if (!phoneNumber.matches(regex)) {
-            throw new IllegalArgumentException("El número de teléfono no es válido. Debe tener hasta 13 dígitos y puede contener solo un símbolo de '+' al inicio.");
+        if(!phoneNumber.startsWith(NUMBER_PREFIX)){
+            throw new IllegalArgumentException(NUMBER_PREFIX_MESSAGE);
         }
 
-        if (phoneNumber.startsWith("+")) {
-            if (phoneNumber.length() > 14) {
-                throw new IllegalArgumentException("El número de teléfono no puede tener más de 13 dígitos después del '+'.");
-            }
-        } else {
-            if (phoneNumber.length() > 13) {
-                throw new IllegalArgumentException("El número de teléfono no puede tener más de 13 dígitos.");
-            }
+        if(phoneNumber.length() > 13){
+            throw new IllegalArgumentException(NUMBER_SIZE_TOOLONG_MESSAGE);
         }
+
     }
 
 
@@ -70,7 +71,7 @@ public class UserValidator {
 
     public static int calculateAge(LocalDate birthDate) {
         if (birthDate == null) {
-            throw new IllegalArgumentException("The birthDate cannot be null");
+            throw new IllegalArgumentException(BIRTHDAY_NULL_MESSAGE);
         }
 
         return Period.between(birthDate, LocalDate.now()).getYears();
@@ -98,7 +99,7 @@ public class UserValidator {
 
     private void validatePassword(String password) {
         if (password == null || password.isEmpty() ) {
-            throw new IllegalArgumentException("Password cannot be null or empty");
+            throw new IllegalArgumentException(PASSWORD_NULLOREMPTY_MESSAGE);
         }
 
         if(!validPasswordFormat(password)){
@@ -126,9 +127,8 @@ public class UserValidator {
 
     protected void validateRole(Role role) {
         if (role == null) {
-            throw new IllegalArgumentException("Role cannot be null or empty");
+            throw new IllegalArgumentException(ROLE_CANNOT_BE_NULL_OR_EMPTY_MESSAGE);
         }
-        // Aquí podrías agregar lógica adicional para verificar si el rol existe
         if (!roleExists(role)) {
             throw new RoleNotFoundException(role.getId());
         }
