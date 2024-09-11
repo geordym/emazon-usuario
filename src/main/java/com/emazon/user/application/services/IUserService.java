@@ -1,5 +1,6 @@
 package com.emazon.user.application.services;
 
+import com.emazon.user.application.dto.general.GenericResponseDto;
 import com.emazon.user.application.dto.security.InternalUserInfoResponseDto;
 import com.emazon.user.domain.model.User;
 import com.emazon.user.application.dto.rest.dto.request.user.CreateUserRequestDto;
@@ -12,8 +13,8 @@ import java.util.Optional;
 public interface IUserService {
     UserInfoResponseDto getClientInfoById(Long userId);
     UserInfoResponseDto getUserInfoByAuthenticationContext();
-    void createUserWarehouseAssistant(CreateUserRequestDto createUserRequestDto);
-    void createUserClient(CreateUserRequestDto createUserRequestDto);
+    GenericResponseDto createUserWarehouseAssistant(CreateUserRequestDto createUserRequestDto);
+    GenericResponseDto createUserClient(CreateUserRequestDto createUserRequestDto);
 
     Optional<InternalUserInfoResponseDto> getUserInfoByEmail(String email);
     List<User> getUsersByRoleId(Long roleId);

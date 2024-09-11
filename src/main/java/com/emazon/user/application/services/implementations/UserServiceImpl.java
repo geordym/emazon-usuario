@@ -1,6 +1,7 @@
 package com.emazon.user.application.services.implementations;
 
 
+import com.emazon.user.application.dto.general.GenericResponseDto;
 import com.emazon.user.application.dto.security.InternalUserInfoResponseDto;
 import com.emazon.user.application.mapper.rest.UserMapper;
 import com.emazon.user.application.services.IUserService;
@@ -16,10 +17,14 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.emazon.user.infraestructure.rest.constants.RestConstants.CREATE_USER_CLIENT_MESSAGE;
+import static com.emazon.user.infraestructure.rest.constants.RestConstants.CREATE_USER_WAREHOUSE_ASSISTANT_MESSAGE;
 
 
 @RequiredArgsConstructor
@@ -31,7 +36,7 @@ public class UserServiceImpl implements IUserService {
     public UserInfoResponseDto getUserInfoByAuthenticationContext() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !(authentication.getPrincipal() instanceof UserDetails)) {
-            throw new RuntimeException("Not authenticated user");
+            throw new RuntimeException();
         }
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -41,7 +46,7 @@ public class UserServiceImpl implements IUserService {
             Optional<User> userOptional = userUseCases.getUserByEmail(userDetails.getUsername());
 
             if(userOptional.isEmpty()){
-                throw new RuntimeException("User does not exist by this email");
+                throw new RuntimeException();
             }
 
             User user = userOptional.get();
@@ -50,17 +55,19 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public void createUserWarehouseAssistant(CreateUserRequestDto createUserRequestDto) {
+    public GenericResponseDto createUserWarehouseAssistant(CreateUserRequestDto createUserRequestDto) {
         User user = UserMapper.dtoToDomain(createUserRequestDto);
         user.setRole(RoleEnum.WAREHOUSE_ASSISTANT.toModel());
         userUseCases.createUser(user);
+        return new GenericResponseDto(CREATE_USER_WAREHOUSE_ASSISTANT_MESSAGE, LocalDateTime.now().toString());
     }
 
     @Override
-    public void createUserClient(CreateUserRequestDto createUserRequestDto) {
+    public GenericResponseDto createUserClient(CreateUserRequestDto createUserRequestDto) {
         User user = UserMapper.dtoToDomain(createUserRequestDto);
         user.setRole(RoleEnum.CLIENTE.toModel());
         userUseCases.createUser(user);
+        return new GenericResponseDto(CREATE_USER_CLIENT_MESSAGE, LocalDateTime.now().toString());
     }
 
     @Override
