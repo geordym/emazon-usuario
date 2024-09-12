@@ -1,7 +1,7 @@
 package com.emazon.user.infraestructure.configuration.security;
 
 
-import com.emazon.user.infraestructure.enums.RoleEnum;
+import com.emazon.user.domain.enums.RoleEnum;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

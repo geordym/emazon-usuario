@@ -1,8 +1,8 @@
 package com.emazon.user.infraestructure.seeder;
 
-import com.emazon.user.application.services.implementations.UserServiceImpl;
+import com.emazon.user.application.handlers.IUserRestHandler;
 import com.emazon.user.domain.model.User;
-import com.emazon.user.infraestructure.enums.RoleEnum;
+import com.emazon.user.domain.enums.RoleEnum;
 import com.emazon.user.application.dto.rest.dto.request.user.CreateUserRequestDto;
 import com.github.javafaker.Faker;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ import static com.emazon.user.domain.util.Constantes.MINIMUM_USER_AGE;
 @RequiredArgsConstructor
 public class AdminSeeder implements CommandLineRunner, Ordered {
 
-    private final UserServiceImpl userServiceImpl;
+    private final IUserRestHandler userRestHandler;
 
     private static final Logger log = LoggerFactory.getLogger(AdminSeeder.class);
     @Override
@@ -38,10 +38,10 @@ public class AdminSeeder implements CommandLineRunner, Ordered {
                 "admin1234"
         );
 
-        List<User> administradores =  userServiceImpl.getUsersByRoleId(RoleEnum.ADMINISTRADOR.getId());
+        List<User> administradores =  userRestHandler.getUsersByRoleId(RoleEnum.ADMINISTRADOR.getId());
         if (administradores.isEmpty()) {
             log.info("No administrator detected in the database, creating a default administrator.");
-            userServiceImpl.createUser(userAdmin, RoleEnum.ADMINISTRADOR);
+            userRestHandler.createAdministrator(userAdmin);
         }
         System.out.println("USUARIOS ADMINISTRADORES: " + administradores.size());
 

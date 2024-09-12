@@ -14,8 +14,8 @@ import java.util.Map;
 public class UserExceptionsHandler {
 
 
-    @ExceptionHandler(ClientNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleClientNotFoundException(ClientNotFoundException e) {
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleClientNotFoundException(UserNotFoundException e) {
         Map<String, String> errorResponse = new HashMap<>();
         errorResponse.put("error", e.getMessage());
         return ResponseEntity

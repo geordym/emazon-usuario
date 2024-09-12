@@ -10,7 +10,7 @@ public class ErrorMessages {
     public static final String ROLE_NOT_FOUND = "Role with ID %d does not exist.";
     public static final String INVALID_CREDENTIALS_EXCEPTION = "Invalid email or password";
     public static final String USERNAME_NOT_FOUND = "Username '%s' not found";
-    public static final String CLIENT_NOT_FOUND = "Client with ID '%s' not found";
+    public static final String USER_NOT_FOUND = "Client with ID '%s' not found";
     public static final String INVALID_USERNAME_PASSWORD_EXCEPTION = "Invalid username or password";
 
 }

@@ -34,7 +34,6 @@ public class UserValidator {
     public void validate(User user) {
         validateEmail(user.getEmail());
         validatePassword(user.getPassword());
-        validateRole(user.getRole());
         validateIdentityDocument(user.getIdentityDocument());
         validateAge(user.getBirthDate());
         validatePhoneNumber(user.getPhoneNumber());
@@ -124,16 +123,6 @@ public class UserValidator {
         Pattern pattern = Pattern.compile(emailRegex);
         return pattern.matcher(email).matches();
     }
-
-    protected void validateRole(Role role) {
-        if (role == null) {
-            throw new IllegalArgumentException(ROLE_CANNOT_BE_NULL_OR_EMPTY_MESSAGE);
-        }
-        if (!roleExists(role)) {
-            throw new RoleNotFoundException(role.getId());
-        }
-    }
-
     private boolean roleExists(Role role) {
         return roleRepositoryPort.existsRolById(role.getId());
     }

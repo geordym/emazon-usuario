@@ -1,6 +1,9 @@
 package com.emazon.user.infraestructure.configuration;
 
 
+import com.emazon.user.application.handlers.IUserRestHandler;
+import com.emazon.user.application.handlers.implementations.UserRestHandlerImpl;
+import com.emazon.user.application.services.IUserService;
 import com.emazon.user.application.services.implementations.UserServiceImpl;
 import com.emazon.user.domain.ports.out.RoleRepositoryPort;
 import com.emazon.user.domain.usecases.UserUseCasesImpl;
@@ -14,6 +17,11 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class BeanUserConfiguration {
+
+    @Bean
+    public IUserRestHandler userRestHandler(IUserService userService){
+        return new UserRestHandlerImpl(userService);
+    }
 
     @Bean
     public UserServiceImpl userService(UserRepositoryPort userRepositoryPort, PasswordEncoderPort passwordEncoderPort, UserValidator userValidator){

@@ -1,7 +1,6 @@
 package com.emazon.user.infraestructure.exceptionshandlers;
 
 
-import com.emazon.user.domain.exception.User.ClientNotFoundException;
 import com.emazon.user.domain.exception.User.InvalidUsernameOrPasswordException;
 import com.emazon.user.infraestructure.exceptions.InvalidCredentialsException;
 import org.springframework.http.HttpStatus;

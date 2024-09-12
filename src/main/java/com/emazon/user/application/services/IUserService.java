@@ -1,21 +1,17 @@
 package com.emazon.user.application.services;
 
-import com.emazon.user.application.dto.general.GenericResponseDto;
-import com.emazon.user.application.dto.security.InternalUserInfoResponseDto;
 import com.emazon.user.domain.model.User;
-import com.emazon.user.application.dto.rest.dto.request.user.CreateUserRequestDto;
-import com.emazon.user.application.dto.rest.dto.response.user.UserInfoResponseDto;
-import com.emazon.user.infraestructure.enums.RoleEnum;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface IUserService {
-    UserInfoResponseDto getClientInfoById(Long userId);
-    UserInfoResponseDto getUserInfoByAuthenticationContext();
-    GenericResponseDto createUserWarehouseAssistant(CreateUserRequestDto createUserRequestDto);
-    GenericResponseDto createUserClient(CreateUserRequestDto createUserRequestDto);
+    User createClient(User user);
+    User createWarehouseAssistant(User user);
+    User createAdministrator(User user);
 
-    Optional<InternalUserInfoResponseDto> getUserInfoByEmail(String email);
+
     List<User> getUsersByRoleId(Long roleId);
+
+    User getUserByEmail(String email);
+    User getClientById(Long clientId);
 }

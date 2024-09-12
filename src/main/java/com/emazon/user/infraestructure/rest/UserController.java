@@ -3,9 +3,9 @@ package com.emazon.user.infraestructure.rest;
 
 import com.emazon.user.application.dto.general.GenericResponseDto;
 import com.emazon.user.application.dto.rest.dto.request.user.CreateUserRequestDto;
+import com.emazon.user.application.handlers.IUserRestHandler;
 import com.emazon.user.application.services.IUserService;
 import com.emazon.user.application.dto.rest.dto.response.user.UserInfoResponseDto;
-import com.emazon.user.infraestructure.enums.RoleEnum;
 import com.emazon.user.infraestructure.rest.constants.HttpStatusCodes;
 import com.emazon.user.infraestructure.rest.constants.SwaggerConstants;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,16 +18,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-
-import static com.emazon.user.infraestructure.rest.constants.RestConstants.CREATE_USER_CLIENT_MESSAGE;
-
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
-    private final IUserService userService;
-
+    private final IUserRestHandler userRestHandler;
 
     @Operation(
             summary = SwaggerConstants.GET_CLIENTINFO_BYID_SUMMARY,
@@ -39,11 +34,11 @@ public class UserController {
     })
     @GetMapping("/info/client/{clientId}")
     public ResponseEntity<UserInfoResponseDto> getClientInfo(@PathVariable("clientId") Long clientId) {
-        UserInfoResponseDto userInfo = userService.getClientInfoById(clientId);
+        UserInfoResponseDto userInfo = userRestHandler.getClientInfoById(clientId);
         return new ResponseEntity<>(userInfo,HttpStatus.OK);
     }
 
-    @Operation(
+   /* @Operation(
             summary = SwaggerConstants.GET_USERINFO_SUMMARY,
             description = SwaggerConstants.GET_USERINFO_DESCRIPTION
     )
@@ -57,7 +52,7 @@ public class UserController {
         UserInfoResponseDto userInfoResponseDto = userService.getUserInfoByAuthenticationContext();
         return ResponseEntity.status(HttpStatus.OK)
                 .body(userInfoResponseDto);
-    }
+    } */
 
 
     @Operation(
@@ -71,7 +66,7 @@ public class UserController {
     })
     @PostMapping("/register/client")
     public ResponseEntity<GenericResponseDto> registerUserClient(@RequestBody @Valid CreateUserRequestDto createUserRequestDto) {
-        GenericResponseDto genericResponseDto = userService.createUserClient(createUserRequestDto);
+        GenericResponseDto genericResponseDto = userRestHandler.createClient(createUserRequestDto);
         return new ResponseEntity<>(genericResponseDto, HttpStatus.CREATED);
     }
 
@@ -86,7 +81,7 @@ public class UserController {
     })
     @PostMapping("/register/warehouse-assistant")
     public ResponseEntity<GenericResponseDto> registerUserWarehouseAssistant(@RequestBody @Valid CreateUserRequestDto createUserRequestDto) {
-        GenericResponseDto genericResponseDto =  userService.createUserWarehouseAssistant(createUserRequestDto);
+        GenericResponseDto genericResponseDto =  userRestHandler.createUserWarehouseAssistant(createUserRequestDto);
         return new ResponseEntity<>(genericResponseDto, HttpStatus.CREATED);
     }
 

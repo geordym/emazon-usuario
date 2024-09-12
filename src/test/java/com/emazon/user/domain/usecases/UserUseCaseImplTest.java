@@ -9,17 +9,13 @@ import com.emazon.user.domain.model.User;
 import com.emazon.user.domain.ports.out.RoleRepositoryPort;
 import com.emazon.user.domain.ports.out.security.PasswordEncoderPort;
 import com.emazon.user.domain.ports.out.UserRepositoryPort;
-import com.emazon.user.infraestructure.adapters.RoleRepositoryMySQLAdapter;
-import com.emazon.user.infraestructure.adapters.UserRepositoryMySQLAdapter;
-import com.emazon.user.infraestructure.enums.RoleEnum;
+import com.emazon.user.domain.enums.RoleEnum;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -27,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.emazon.user.domain.util.Constantes.MINIMUM_USER_AGE;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -162,12 +157,12 @@ public class UserUseCaseImplTest {
         user.setBirthDate(LocalDate.now().minusYears(30));
         user.setPhoneNumber("+1234567890");
 
-        when(userUseCases.getClientById(clientId)).thenReturn(Optional.of(user));
-        Optional<User> userOptional = userUseCases.getClientById(user.getId());
+        when(userUseCases.getClientById(clientId)).thenReturn(user);
+        User userOptional = userUseCases.getClientById(user.getId());
 
         assertNotNull(userOptional);
         assertNotEquals(userOptional, Optional.empty());
-        assertEquals(userOptional.get().getEmail(), user.getEmail());
+        assertEquals(userOptional.getEmail(), user.getEmail());
     }
 
 

@@ -1,4 +1,4 @@
-package com.emazon.user.infraestructure.enums;
+package com.emazon.user.domain.enums;
 
 import com.emazon.user.domain.model.Role;
 import com.emazon.user.infraestructure.entities.RoleEntity;

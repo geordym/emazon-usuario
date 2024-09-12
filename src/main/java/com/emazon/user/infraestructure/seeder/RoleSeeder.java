@@ -2,7 +2,7 @@ package com.emazon.user.infraestructure.seeder;
 
 import com.emazon.user.domain.ports.out.RoleRepositoryPort;
 import com.emazon.user.infraestructure.entities.RoleEntity;
-import com.emazon.user.infraestructure.enums.RoleEnum;
+import com.emazon.user.domain.enums.RoleEnum;
 import com.emazon.user.application.mapper.rest.RoleMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;

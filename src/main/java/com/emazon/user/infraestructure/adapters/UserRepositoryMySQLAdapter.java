@@ -3,7 +3,7 @@ package com.emazon.user.infraestructure.adapters;
 import com.emazon.user.domain.model.User;
 import com.emazon.user.domain.ports.out.UserRepositoryPort;
 import com.emazon.user.infraestructure.entities.UserEntity;
-import com.emazon.user.infraestructure.enums.RoleEnum;
+import com.emazon.user.domain.enums.RoleEnum;
 import com.emazon.user.application.mapper.rest.UserMapper;
 import com.emazon.user.infraestructure.repositories.UserCrudRepositoryMySQL;
 import lombok.RequiredArgsConstructor;

@@ -3,12 +3,13 @@ package com.emazon.user.domain.ports.in;
 import com.emazon.user.domain.model.User;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface UserUseCases {
-    User createUser(User user);
+    User createClient(User user);
+    User createWarehouseAssistant(User user);
+    User createAdministrator(User user);
     List<User> getUsersByRoleId(Long roleId);
 
-    Optional<User> getUserByEmail(String email);
-    Optional<User> getClientById(Long clientId);
+    User getUserByEmail(String email);
+    User getClientById(Long clientId);
 }
