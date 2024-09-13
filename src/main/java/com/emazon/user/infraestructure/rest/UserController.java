@@ -65,7 +65,7 @@ public class UserController {
             @ApiResponse(responseCode = HttpStatusCodes.HTTP_CONFLICT, description = SwaggerConstants.REGISTER_CLIENT_API_RESPONSES_409_DESCRIPTION, content = @Content)
     })
     @PostMapping("/register/client")
-    public ResponseEntity<GenericResponseDto> registerUserClient(@RequestBody @Valid CreateUserRequestDto createUserRequestDto) {
+    public ResponseEntity<GenericResponseDto> registerClient(@RequestBody @Valid CreateUserRequestDto createUserRequestDto) {
         GenericResponseDto genericResponseDto = userRestHandler.createClient(createUserRequestDto);
         return new ResponseEntity<>(genericResponseDto, HttpStatus.CREATED);
     }
@@ -80,7 +80,7 @@ public class UserController {
             @ApiResponse(responseCode = HttpStatusCodes.HTTP_CONFLICT, description = SwaggerConstants.REGISTER_WAREHOUSE_ASSISTANT_API_RESPONSES_409_DESCRIPTION, content = @Content)
     })
     @PostMapping("/register/warehouse-assistant")
-    public ResponseEntity<GenericResponseDto> registerUserWarehouseAssistant(@RequestBody @Valid CreateUserRequestDto createUserRequestDto) {
+    public ResponseEntity<GenericResponseDto> registerWarehouseAssistant(@RequestBody @Valid CreateUserRequestDto createUserRequestDto) {
         GenericResponseDto genericResponseDto =  userRestHandler.createUserWarehouseAssistant(createUserRequestDto);
         return new ResponseEntity<>(genericResponseDto, HttpStatus.CREATED);
     }
