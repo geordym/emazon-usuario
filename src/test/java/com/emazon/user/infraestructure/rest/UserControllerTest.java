@@ -1,7 +1,7 @@
 package com.emazon.user.infraestructure.rest;
 
 
-import com.emazon.user.domain.ports.out.UserRepositoryPort;
+import com.emazon.user.domain.ports.out.UserPersistencePort;
 import com.emazon.user.domain.ports.out.security.TokenProviderPort;
 import com.emazon.user.domain.util.ErrorMessages;
 import com.emazon.user.infraestructure.configuration.security.JwtRequestFilter;
@@ -41,7 +41,7 @@ public class UserControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
     @MockBean
-    private UserRepositoryPort userRepositoryPort;
+    private UserPersistencePort userRepositoryPort;
 
     @MockBean
     private TokenProviderPort tokenProviderPort;

@@ -8,7 +8,7 @@ import com.emazon.user.domain.model.Role;
 import com.emazon.user.domain.model.User;
 import com.emazon.user.domain.ports.out.RoleRepositoryPort;
 import com.emazon.user.domain.ports.out.security.PasswordEncoderPort;
-import com.emazon.user.domain.ports.out.UserRepositoryPort;
+import com.emazon.user.domain.ports.out.UserPersistencePort;
 import com.emazon.user.domain.enums.RoleEnum;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,7 +32,7 @@ import static org.mockito.Mockito.*;
 public class UserUseCaseImplTest {
 
     @Mock
-    private UserRepositoryPort userRepositoryPort;
+    private UserPersistencePort userRepositoryPort;
 
     @Mock
     private PasswordEncoderPort passwordEncoderPort;
@@ -54,7 +54,7 @@ public class UserUseCaseImplTest {
 
     @BeforeEach
     void setup(){
-        userValidator = new UserValidator(mock(UserRepositoryPort.class), mock(RoleRepositoryPort.class));
+        userValidator = new UserValidator(mock(UserPersistencePort.class), mock(RoleRepositoryPort.class));
         roleWareHouseAssistant = new Role(RoleEnum.WAREHOUSE_ASSISTANT.getId(), RoleEnum.WAREHOUSE_ASSISTANT.getName());
     }
 

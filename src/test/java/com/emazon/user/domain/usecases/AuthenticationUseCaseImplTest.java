@@ -6,7 +6,7 @@ import com.emazon.user.domain.model.AuthToken;
 import com.emazon.user.domain.model.Role;
 import com.emazon.user.domain.model.User;
 import com.emazon.user.domain.model.UserAuthentication;
-import com.emazon.user.domain.ports.out.UserRepositoryPort;
+import com.emazon.user.domain.ports.out.UserPersistencePort;
 import com.emazon.user.domain.ports.out.security.PasswordEncoderPort;
 import com.emazon.user.domain.ports.out.security.TokenProviderPort;
 import com.emazon.user.infraestructure.adapters.security.EncryptionBCryptAdapter;
@@ -35,7 +35,7 @@ public class AuthenticationUseCaseImplTest {
 
 
     @Mock
-    private UserRepositoryPort userRepositoryPort;
+    private UserPersistencePort userRepositoryPort;
     @Mock
     private PasswordEncoderPort passwordEncoderPort;
     @Mock

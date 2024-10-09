@@ -1,8 +1,7 @@
 package com.emazon.user.infraestructure.rest;
 
 import com.emazon.user.application.dto.rest.dto.request.authentication.AuthenticationRequestDto;
-import com.emazon.user.application.dto.rest.dto.request.user.CreateUserRequestDto;
-import com.emazon.user.domain.ports.out.UserRepositoryPort;
+import com.emazon.user.domain.ports.out.UserPersistencePort;
 import com.emazon.user.domain.ports.out.security.TokenProviderPort;
 import com.emazon.user.infraestructure.configuration.security.JwtRequestFilter;
 import com.emazon.user.infraestructure.configuration.security.MyUserDetailsService;
@@ -32,7 +31,7 @@ public class AuthenticationControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
     @MockBean
-    private UserRepositoryPort userRepositoryPort;
+    private UserPersistencePort userRepositoryPort;
 
     @MockBean
     private TokenProviderPort tokenProviderPort;

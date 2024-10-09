@@ -5,7 +5,7 @@ import com.emazon.user.domain.usecases.validators.UserValidator;
 import com.emazon.user.domain.model.User;
 import com.emazon.user.domain.ports.in.UserUseCases;
 import com.emazon.user.domain.ports.out.security.PasswordEncoderPort;
-import com.emazon.user.domain.ports.out.UserRepositoryPort;
+import com.emazon.user.domain.ports.out.UserPersistencePort;
 import com.emazon.user.domain.enums.RoleEnum;
 import lombok.RequiredArgsConstructor;
 
@@ -18,7 +18,7 @@ public class UserUseCasesImpl implements UserUseCases {
 
     private final PasswordEncoderPort passwordEncoderPort;
     private final UserValidator userValidator;
-    private final UserRepositoryPort userRepositoryPort;
+    private final UserPersistencePort userRepositoryPort;
 
     @Override
     public User createClient(User user) {

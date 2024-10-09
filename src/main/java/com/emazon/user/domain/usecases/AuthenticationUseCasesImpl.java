@@ -1,15 +1,13 @@
 package com.emazon.user.domain.usecases;
 
-import com.emazon.user.application.dto.rest.dto.request.authentication.AuthenticationRequestDto;
 import com.emazon.user.domain.exception.User.InvalidUsernameOrPasswordException;
 import com.emazon.user.domain.model.AuthToken;
-import com.emazon.user.domain.model.Role;
 import com.emazon.user.domain.model.User;
 import com.emazon.user.domain.model.UserAuthentication;
 import com.emazon.user.domain.ports.in.AuthenticationUseCases;
 import com.emazon.user.domain.ports.out.security.PasswordEncoderPort;
 import com.emazon.user.domain.ports.out.security.TokenProviderPort;
-import com.emazon.user.domain.ports.out.UserRepositoryPort;
+import com.emazon.user.domain.ports.out.UserPersistencePort;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -24,7 +22,7 @@ import static com.emazon.user.domain.util.Constantes.SECURITY_PASSWORD_MIN_LENGT
 public class AuthenticationUseCasesImpl implements AuthenticationUseCases {
 
     private final PasswordEncoderPort passwordEncoderPort;
-    private final UserRepositoryPort userRepositoryPort;
+    private final UserPersistencePort userRepositoryPort;
     private final TokenProviderPort tokenProviderPort;
 
 

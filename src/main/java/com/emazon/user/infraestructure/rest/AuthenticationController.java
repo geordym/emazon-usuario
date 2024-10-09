@@ -1,6 +1,8 @@
 package com.emazon.user.infraestructure.rest;
 
 
+import com.emazon.user.application.dto.rest.dto.response.authentication.AuthenticationResponseDto;
+import com.emazon.user.application.handlers.IAuthenticationRestHandler;
 import com.emazon.user.application.services.IAuthenticationService;
 import com.emazon.user.domain.model.AuthToken;
 import com.emazon.user.domain.model.UserAuthentication;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
 
     private final IAuthenticationService authenticationService;
+    private final IAuthenticationRestHandler authenticationRestHandler;
 
     @Operation(
             summary = SwaggerConstants.AUTHENTICATE_USER_SUMMARY,
@@ -36,10 +39,10 @@ public class AuthenticationController {
             @ApiResponse(responseCode = HttpStatusCodes.HTTP_NOT_FOUND, description = SwaggerConstants.AUTHENTICATE_USER_API_RESPONSES_404_DESCRIPTION, content = @Content),
     })
     @PostMapping
-    public ResponseEntity<AuthToken> authenticateUser(@RequestBody @Valid AuthenticationRequestDto
+    public ResponseEntity<AuthenticationResponseDto> authenticateUser(@RequestBody @Valid AuthenticationRequestDto
                                                                   authenticationRequest) throws Exception {
-        AuthToken authToken = authenticationService.authenticateUser(authenticationRequest);
-        return new ResponseEntity<>(authToken, HttpStatus.OK);
+        AuthenticationResponseDto authenticationResponseDto = authenticationRestHandler.authenticateUser(authenticationRequest);
+        return new ResponseEntity<>(authenticationResponseDto, HttpStatus.OK);
     }
 
 

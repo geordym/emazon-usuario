@@ -1,14 +1,12 @@
 package com.emazon.user.domain.usecases.validators;
 
 
-import com.emazon.user.domain.exception.Role.RoleNotFoundException;
 import com.emazon.user.domain.exception.User.*;
 import com.emazon.user.domain.model.Role;
 import com.emazon.user.domain.model.User;
 import com.emazon.user.domain.ports.out.RoleRepositoryPort;
-import com.emazon.user.domain.ports.out.UserRepositoryPort;
+import com.emazon.user.domain.ports.out.UserPersistencePort;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -27,7 +25,7 @@ public class UserValidator {
     public static final String BIRTHDAY_NULL_MESSAGE = "The birthDate cannot be null";
     public static final String PASSWORD_NULLOREMPTY_MESSAGE = "Password cannot be null or empty";
     public static final String ROLE_CANNOT_BE_NULL_OR_EMPTY_MESSAGE = "Role cannot be null or empty";
-    private final UserRepositoryPort userRepositoryPort;
+    private final UserPersistencePort userRepositoryPort;
     private final RoleRepositoryPort roleRepositoryPort;
 
 

@@ -11,14 +11,8 @@ import lombok.RequiredArgsConstructor;
 public class AuthenticationServiceImpl implements IAuthenticationService {
 
     private final AuthenticationUseCases authenticationUseCases;
-
     @Override
-    public AuthToken authenticateUser(AuthenticationRequestDto authenticationRequestDto) {
-        UserAuthentication userAuthentication =
-                new UserAuthentication(authenticationRequestDto.getUsername(),
-                        authenticationRequestDto.getPassword());
+    public AuthToken authenticateUser(UserAuthentication userAuthentication) {
         return authenticationUseCases.authenticateUser(userAuthentication);
     }
-
-
 }

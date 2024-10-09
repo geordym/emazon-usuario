@@ -5,7 +5,7 @@ import com.emazon.user.application.services.implementations.AuthenticationServic
 import com.emazon.user.domain.ports.in.AuthenticationUseCases;
 import com.emazon.user.domain.ports.out.security.PasswordEncoderPort;
 import com.emazon.user.domain.ports.out.security.TokenProviderPort;
-import com.emazon.user.domain.ports.out.UserRepositoryPort;
+import com.emazon.user.domain.ports.out.UserPersistencePort;
 import com.emazon.user.domain.usecases.AuthenticationUseCasesImpl;
 import com.emazon.user.infraestructure.adapters.security.JwtIOTokenAdapter;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +20,7 @@ public class BeanAuthenticationConfiguration {
 
     @Bean
     public AuthenticationUseCases authenticationUseCases(PasswordEncoderPort passwordEncoderPort,
-                                                         UserRepositoryPort userRepositoryPort,
+                                                         UserPersistencePort userRepositoryPort,
                                                          TokenProviderPort tokenProviderPort
                                                          ){
         return new AuthenticationUseCasesImpl(passwordEncoderPort,userRepositoryPort,tokenProviderPort);
